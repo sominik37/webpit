@@ -1,0 +1,5 @@
+{
+  "name": "WebPit",
+  "description": "Optimize and convert images to WebP format locally in your browser.",
+  "requestFramePermissions": []
+}
