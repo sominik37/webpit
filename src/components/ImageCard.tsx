@@ -15,6 +15,7 @@ export interface ProcessedImage {
   originalSize: number;
   processedSize?: number;
   quality: number;
+  isOriginalKept?: boolean;
 }
 
 interface ImageCardProps {
@@ -24,14 +25,14 @@ interface ImageCardProps {
 }
 
 export const ImageCard: React.FC<ImageCardProps> = ({ item, onRemove, onDownload }) => {
-  const savings = item.processedSize 
+  const savings = item.processedSize
     ? Math.round(((item.originalSize - item.processedSize) / item.originalSize) * 100)
     : 0;
 
   const isPositiveSavings = savings > 0;
 
   return (
-    <motion.div 
+    <motion.div
       layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -40,9 +41,9 @@ export const ImageCard: React.FC<ImageCardProps> = ({ item, onRemove, onDownload
     >
       {/* Preview */}
       <div className="relative w-full sm:w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-gray-100 border border-gray-200">
-        <img 
-          src={item.previewUrl} 
-          alt="Preview" 
+        <img
+          src={item.previewUrl}
+          alt="Preview"
           className="w-full h-full object-cover"
         />
         {item.status === 'processing' && (
@@ -73,13 +74,18 @@ export const ImageCard: React.FC<ImageCardProps> = ({ item, onRemove, onDownload
             <span className="text-gray-400">...</span>
           )}
         </div>
-        
+
         {item.status === 'done' && (
           <div className={cn(
             "inline-flex items-center gap-1 text-xs font-medium mt-2 px-2 py-0.5 rounded-full",
-            isPositiveSavings ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-700"
+            item.isOriginalKept ? "bg-blue-100 text-blue-700" : (isPositiveSavings ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-700")
           )}>
-            {isPositiveSavings ? (
+            {item.isOriginalKept ? (
+              <>
+                <Check className="w-3 h-3" />
+                Kept Original (0%)
+              </>
+            ) : isPositiveSavings ? (
               <>
                 <Check className="w-3 h-3" />
                 Saved {savings}%
@@ -91,7 +97,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({ item, onRemove, onDownload
             )}
           </div>
         )}
-        
+
         {item.status === 'error' && (
           <p className="text-xs text-red-500 mt-1">{item.error || 'Conversion failed'}</p>
         )}
@@ -108,7 +114,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({ item, onRemove, onDownload
         >
           <X className="w-4 h-4" />
         </Button>
-        
+
         <Button
           onClick={() => onDownload(item)}
           disabled={item.status !== 'done'}

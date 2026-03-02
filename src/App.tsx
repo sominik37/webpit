@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import JSZip from 'jszip';
 import { Dropzone } from './components/Dropzone';
 import { ImageCard, type ProcessedImage } from './components/ImageCard';
 import { Slider } from './components/ui/slider';
@@ -17,27 +18,41 @@ export default function App() {
     return new Promise<ProcessedImage>((resolve) => {
       const image = new Image();
       image.src = img.previewUrl;
-      
+
       image.onload = () => {
         const canvas = document.createElement('canvas');
         canvas.width = image.width;
         canvas.height = image.height;
-        
+
         const ctx = canvas.getContext('2d');
         if (!ctx) {
           resolve({ ...img, status: 'error', error: 'Canvas context failed' });
           return;
         }
-        
+
         ctx.drawImage(image, 0, 0);
-        
+
         canvas.toBlob(
           (blob) => {
             if (!blob) {
               resolve({ ...img, status: 'error', error: 'Conversion failed' });
               return;
             }
-            
+
+            if (blob.size >= img.originalSize) {
+              // Keep original if optimized is larger or same size
+              resolve({
+                ...img,
+                status: 'done',
+                resultBlob: img.originalFile,
+                resultUrl: img.previewUrl,
+                processedSize: img.originalSize,
+                quality: targetQuality,
+                isOriginalKept: true
+              });
+              return;
+            }
+
             const resultUrl = URL.createObjectURL(blob);
             resolve({
               ...img,
@@ -45,14 +60,15 @@ export default function App() {
               resultBlob: blob,
               resultUrl,
               processedSize: blob.size,
-              quality: targetQuality
+              quality: targetQuality,
+              isOriginalKept: false
             });
           },
           'image/webp',
           targetQuality / 100
         );
       };
-      
+
       image.onerror = () => {
         resolve({ ...img, status: 'error', error: 'Failed to load image' });
       };
@@ -70,18 +86,18 @@ export default function App() {
     }));
 
     setImages(prev => [...prev, ...newImages]);
-    
+
     // Trigger processing for new images
     newImages.forEach(img => {
       // Small delay to allow UI to update
       setTimeout(async () => {
-        setImages(current => 
+        setImages(current =>
           current.map(i => i.id === img.id ? { ...i, status: 'processing' } : i)
         );
-        
+
         const result = await processImage(img, quality);
-        
-        setImages(current => 
+
+        setImages(current =>
           current.map(i => i.id === img.id ? result : i)
         );
       }, 100);
@@ -99,14 +115,46 @@ export default function App() {
 
   const handleDownload = (item: ProcessedImage) => {
     if (!item.resultUrl) return;
-    
+
     const link = document.createElement('a');
     link.href = item.resultUrl;
-    const originalName = item.originalFile.name.replace(/\.[^/.]+$/, "");
-    link.download = `${originalName}.webp`;
+
+    if (item.isOriginalKept) {
+      link.download = item.originalFile.name;
+    } else {
+      const originalName = item.originalFile.name.replace(/\.[^/.]+$/, "");
+      link.download = `${originalName}.webp`;
+    }
+
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const handleDownloadAll = async () => {
+    const doneImages = images.filter(img => img.status === 'done' && img.resultBlob);
+    if (doneImages.length === 0) return;
+
+    const zip = new JSZip();
+    doneImages.forEach((img) => {
+      if (img.isOriginalKept) {
+        zip.file(img.originalFile.name, img.resultBlob!);
+      } else {
+        const originalName = img.originalFile.name.replace(/\.[^/.]+$/, "");
+        zip.file(`${originalName}.webp`, img.resultBlob!);
+      }
+    });
+
+    const content = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(content);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'webpit-optimized-images.zip';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const handleQualityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,11 +164,11 @@ export default function App() {
   // Re-process all images when quality changes (debounced ideally, but simple here)
   const handleReprocessAll = () => {
     if (images.length === 0) return;
-    
+
     setIsProcessing(true);
-    
+
     const promises = images.map(async (img) => {
-      setImages(current => 
+      setImages(current =>
         current.map(i => i.id === img.id ? { ...i, status: 'processing' } : i)
       );
       return processImage({ ...img, resultBlob: undefined, resultUrl: undefined }, quality);
@@ -150,9 +198,9 @@ export default function App() {
             <h1 className="font-semibold text-lg tracking-tight">WebPit</h1>
           </div>
           <div className="flex items-center gap-4">
-            <a 
-              href="https://developers.google.com/speed/webp" 
-              target="_blank" 
+            <a
+              href="https://developers.google.com/speed/webp"
+              target="_blank"
               rel="noreferrer"
               className="text-sm text-gray-500 hover:text-black transition-colors hidden sm:block"
             >
@@ -163,7 +211,7 @@ export default function App() {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-        
+
         {/* Controls & Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Settings Card */}
@@ -172,7 +220,7 @@ export default function App() {
               <Settings2 className="w-5 h-5 text-gray-500" />
               <h2 className="font-medium">Optimization Settings</h2>
             </div>
-            
+
             <div className="space-y-6">
               <Slider
                 label="Quality"
@@ -186,7 +234,7 @@ export default function App() {
                 valueDisplay={`${quality}%`}
               />
               <p className="text-sm text-gray-500">
-                Lower quality results in smaller file sizes but may reduce image fidelity. 
+                Lower quality results in smaller file sizes but may reduce image fidelity.
                 80% is recommended for a good balance.
               </p>
             </div>
@@ -202,7 +250,7 @@ export default function App() {
                 </span>
               </div>
             </div>
-            
+
             <div className="mt-8 space-y-1">
               <div className="flex justify-between text-sm text-white/60">
                 <span>Original</span>
@@ -226,21 +274,33 @@ export default function App() {
               Processed Images ({images.length})
             </h3>
             {images.length > 0 && (
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => setImages([])}
-                className="text-red-500 hover:text-red-600 hover:bg-red-50"
-              >
-                <Trash2 className="w-4 h-4 mr-2" />
-                Clear All
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleDownloadAll}
+                  disabled={!images.some(img => img.status === 'done')}
+                  className="bg-white"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Download All (.zip)
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setImages([])}
+                  className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Clear All
+                </Button>
+              </div>
             )}
           </div>
 
           <AnimatePresence mode="popLayout">
             {images.length === 0 ? (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="text-center py-12 text-gray-400"
@@ -249,9 +309,9 @@ export default function App() {
               </motion.div>
             ) : (
               images.map(img => (
-                <ImageCard 
-                  key={img.id} 
-                  item={img} 
+                <ImageCard
+                  key={img.id}
+                  item={img}
                   onRemove={handleRemove}
                   onDownload={handleDownload}
                 />
