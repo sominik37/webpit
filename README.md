@@ -1,20 +1,61 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# WebPit ⚡️
 
-# Run and deploy your AI Studio app
+**WebPit** is a fast, free, and privacy-focused image optimization tool. It allows you to convert and compress your images (JPG, PNG, GIF) into the modern **WebP** format directly in your browser.
 
-This contains everything you need to run your app locally.
+## 🌟 Key Features
 
-View your app in AI Studio: https://ai.studio/apps/c3a27fe7-d578-404d-a365-da5a37e3b41b
+- **100% Client-Side Processing**: Your images never leave your computer. All compression happens locally in your browser for maximum privacy.
+- **Smart Compression**: Automatically compares the optimized file size with the original. If the original is smaller, it keeps it to ensure you always get the best result.
+- **Batch Processing**: Upload multiple images at once and adjust the quality globally.
+- **Instant ZIP Download**: Optimize dozens of images and download them all as a single, organized `.zip` file.
+- **Responsive Design**: Works perfectly across desktops, tablets, and mobile devices.
+- **SEO Optimized**: Includes built-in structured data, canonical tags, and high-performance metrics (FCP).
 
-## Run Locally
+## 🚀 Tech Stack
 
-**Prerequisites:**  Node.js
+- **Framework**: React 19 + Vite
+- **Styling**: Tailwind CSS v4
+- **Animations**: Motion (Framer Motion v12)
+- **Icons**: Lucide React
+- **Utilities**: JSZip (for batch downloading), clsx, tailwind-merge
+- **Monitoring**: Vercel Speed Insights
 
+## 🛠️ Local Development
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### Prerequisites
+- Node.js (Latest LTS recommended)
+
+### Getting Started
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repository-url>
+   cd webpit
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+4. **Build for production**
+   ```bash
+   npm run build
+   ```
+
+## 🔒 Privacy
+
+WebPit is built on the principle that your data is yours. We do not use any backend servers for image processing. Your photos are handled by the HTML5 Canvas API within your browser environment.
+
+## 📄 License
+
+This project is open-source and available under the MIT License.
+
+---
+Built with ❤️ by [Usman hyder](https://github.com)
