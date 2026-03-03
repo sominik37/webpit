@@ -7,6 +7,7 @@ import { Button } from './components/ui/button';
 import { Download, Trash2, Settings2, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { formatBytes } from './lib/utils';
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 export default function App() {
   const [images, setImages] = useState<ProcessedImage[]>([]);
@@ -187,7 +188,7 @@ export default function App() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] text-gray-900 font-sans pb-20">
+    <div className="min-h-screen bg-[#F5F5F5] text-gray-900 font-sans flex flex-col">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
@@ -210,7 +211,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8 flex-grow w-full">
 
         {/* Controls & Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -319,7 +320,178 @@ export default function App() {
             )}
           </AnimatePresence>
         </div>
+        {/* Informational Content Section */}
+        <div className="mt-16 space-y-12 border-t border-gray-200 pt-16 text-gray-800">
+
+          {/* How to Guide */}
+          <section className="space-y-6">
+            <h2 className="text-3xl font-bold tracking-tight text-black">How to Convert and Compress Your Images</h2>
+            <p className="text-lg text-gray-600">
+              Using WebPit is as easy as "Drag, Slide, and Save." You don’t need to be a tech expert to get professional results.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+              <div className="space-y-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold">1</div>
+                <h3 className="font-semibold text-lg">Upload Your Photos</h3>
+                <p className="text-sm text-gray-500">Drag and drop your JPG, PNG, or GIF files directly into the box above. You can even upload multiple images at once!</p>
+              </div>
+              <div className="space-y-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold">2</div>
+                <h3 className="font-semibold text-lg">Adjust the Quality</h3>
+                <p className="text-sm text-gray-500">Use the "Quality" slider to choose how much you want to shrink the file. 80% is the sweet spot—it makes the file much smaller while keeping the image looking sharp.</p>
+              </div>
+              <div className="space-y-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold">3</div>
+                <h3 className="font-semibold text-lg">Download & Use</h3>
+                <p className="text-sm text-gray-500">Once processed, your new WebP images are ready. Download them instantly to use on your website, blog, or store.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* Why WebP & Comparison Table */}
+          <section className="space-y-8">
+            <div className="max-w-3xl">
+              <h2 className="text-3xl font-bold tracking-tight text-black">Why Should You Use WebP?</h2>
+              <p className="mt-4 text-lg text-gray-600">
+                If you’ve ever wondered why your website feels slow, it’s usually because of "heavy" images. WebP is a modern image format that acts like a "shrink-wrap" for your photos. It keeps the quality high but cuts the file size down significantly.
+              </p>
+            </div>
+
+            <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-gray-50 border-b border-gray-200">
+                    <th className="p-4 font-semibold text-sm">Feature</th>
+                    <th className="p-4 font-semibold text-sm">Old Formats (JPG/PNG)</th>
+                    <th className="p-4 font-semibold text-sm text-black">WebP (The Modern Way)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  <tr>
+                    <td className="p-4 text-sm font-medium">Size</td>
+                    <td className="p-4 text-sm text-gray-500">Large and bulky.</td>
+                    <td className="p-4 text-sm font-medium text-green-600">30% smaller on average.</td>
+                  </tr>
+                  <tr>
+                    <td className="p-4 text-sm font-medium">Speed</td>
+                    <td className="p-4 text-sm text-gray-500">Slows down your website.</td>
+                    <td className="p-4 text-sm font-medium text-green-600">Loads much faster.</td>
+                  </tr>
+                  <tr>
+                    <td className="p-4 text-sm font-medium">Quality</td>
+                    <td className="p-4 text-sm text-gray-500">Loses detail when shrunk.</td>
+                    <td className="p-4 text-sm font-medium text-green-600">Stays crisp even at small sizes.</td>
+                  </tr>
+                  <tr>
+                    <td className="p-4 text-sm font-medium">Transparency</td>
+                    <td className="p-4 text-sm text-gray-500">Only PNGs can have clear backgrounds.</td>
+                    <td className="p-4 text-sm font-medium text-green-600">Supports clear backgrounds with tiny file sizes.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          {/* FAQ Section */}
+          <section className="space-y-8">
+            <h2 className="text-3xl font-bold tracking-tight text-black text-center">Frequently Asked Questions (FAQ)</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+              <div className="space-y-2">
+                <h3 className="font-bold text-lg">What is a WebP file?</h3>
+                <p className="text-gray-600">Think of WebP as a "smarter" version of a photo. It was created by Google to help the internet move faster. It compresses the data inside an image much better than older formats like JPEG or PNG.</p>
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-bold text-lg">Will I lose quality if I compress my images?</h3>
+                <p className="text-gray-600">Technically, yes, but your eyes likely won't see the difference! At our recommended 80% setting, the file size drops dramatically while the image still looks beautiful to the human eye.</p>
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-bold text-lg">Is WebP supported by all browsers?</h3>
+                <p className="text-gray-600">Yes! All modern browsers—including Google Chrome, Apple Safari, Microsoft Edge, and Mozilla Firefox—fully support WebP images. If you use them on your website, everyone will be able to see them.</p>
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-bold text-lg">Why does image size matter for SEO?</h3>
+                <p className="text-gray-600">Google loves fast websites. When your images are small and load quickly, Google ranks your site higher in search results. Using WebP is one of the easiest ways to give your website a "speed boost."</p>
+              </div>
+            </div>
+          </section>
+
+          {/* Benefits Section */}
+          <section className="bg-black text-white rounded-3xl p-10 space-y-8">
+            <h2 className="text-3xl font-bold tracking-tight">The Benefits of Using WebPit for Your Website</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="flex gap-4">
+                <div className="shrink-0 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div>
+                  <h4 className="font-bold">Better Google Rankings</h4>
+                  <p className="text-gray-400 text-sm">Faster sites rank higher. By shrinking your images, you're telling search engines your site is user-friendly.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="shrink-0 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div>
+                  <h4 className="font-bold">Save Storage Space</h4>
+                  <p className="text-gray-400 text-sm">Smaller files mean you use less space on your web hosting or cloud storage.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="shrink-0 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div>
+                  <h4 className="font-bold">Better Mobile Experience</h4>
+                  <p className="text-gray-400 text-sm">People browsing on phones often have slower data. Small WebP images load instantly on mobile devices, keeping your visitors happy.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="shrink-0 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div>
+                  <h4 className="font-bold">100% Free & Private</h4>
+                  <p className="text-gray-400 text-sm">Your images are processed right in your browser. We don't store your photos on our servers, so your privacy is always protected.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-200 py-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-black rounded flex items-center justify-center text-white">
+                <Sparkles className="w-3.5 h-3.5" />
+              </div>
+              <span className="font-semibold text-sm tracking-tight">WebPit</span>
+            </div>
+
+            <p className="text-gray-500 text-sm">
+              © {new Date().getFullYear()} WebPit. Processed locally for your privacy.
+            </p>
+
+            <div className="flex items-center gap-6">
+              <a href="#" className="text-sm text-gray-500 hover:text-black transition-colors">Privacy</a>
+              <a href="#" className="text-sm text-gray-500 hover:text-black transition-colors">Terms</a>
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm text-gray-400 hover:text-black transition-colors"
+              >
+                GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <SpeedInsights />
     </div>
   );
 }
