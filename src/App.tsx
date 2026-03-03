@@ -479,6 +479,7 @@ export default function App() {
             <div className="flex items-center gap-6">
               <a href="#" className="text-sm text-gray-500 hover:text-black transition-colors">Privacy</a>
               <a href="#" className="text-sm text-gray-500 hover:text-black transition-colors">Terms</a>
+              <a href="/sitemap.xml" className="text-sm text-gray-500 hover:text-black transition-colors">Sitemap</a>
               <a
                 href="https://github.com"
                 target="_blank"
