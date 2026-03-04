@@ -58,4 +58,4 @@ WebPit is built on the principle that your data is yours. We do not use any back
 This project is open-source and available under the MIT License.
 
 ---
-Built with ❤️ by [Usman hyder](https://github.com)
+Built with ❤️ by [Usman hyder](https://github.com/sominik37)
