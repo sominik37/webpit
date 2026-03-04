@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import JSZip from 'jszip';
 import { Dropzone } from '../components/Dropzone';
 import { ImageCard, type ProcessedImage } from '../components/ImageCard';
 import { Slider } from '../components/ui/slider';
@@ -132,6 +131,7 @@ export default function Home() {
     const doneImages = images.filter(img => img.status === 'done' && img.resultBlob);
     if (doneImages.length === 0) return;
 
+    const JSZip = (await import('jszip')).default;
     const zip = new JSZip();
     doneImages.forEach((img) => {
       if (img.isOriginalKept) {
