@@ -7,6 +7,13 @@ import { Download, Trash2, Settings2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { formatBytes } from '../lib/utils';
 
+// Declare gtag for TypeScript
+declare global {
+  interface Window {
+    gtag: (command: string, action: string, params?: any) => void;
+  }
+}
+
 export default function Home() {
   const [images, setImages] = useState<ProcessedImage[]>([]);
   const [quality, setQuality] = useState(80);
@@ -93,6 +100,15 @@ export default function Home() {
 
         const result = await processImage(img, quality);
 
+        if (result.status === 'done') {
+          window.gtag?.('event', 'image_converted', {
+            'event_category': 'conversion',
+            'event_label': result.originalFile.name,
+            'is_original_kept': result.isOriginalKept,
+            'quality': quality
+          });
+        }
+
         setImages(current =>
           current.map(i => i.id === img.id ? result : i)
         );
@@ -171,6 +187,25 @@ export default function Home() {
     });
 
     Promise.all(promises).then(results => {
+      const successfulConversions = results.filter(r => r.status === 'done');
+      if (successfulConversions.length > 0) {
+        window.gtag?.('event', 'batch_reprocess', {
+          'event_category': 'conversion',
+          'count': successfulConversions.length,
+          'quality': quality
+        });
+
+        // Also fire individual events for each image in the batch
+        successfulConversions.forEach(result => {
+          window.gtag?.('event', 'image_converted', {
+            'event_category': 'conversion',
+            'event_label': result.originalFile.name,
+            'is_original_kept': result.isOriginalKept,
+            'quality': quality
+          });
+        });
+      }
+
       setImages(results);
       setIsProcessing(false);
     });
