@@ -38,8 +38,24 @@ export default function App() {
 
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 py-12">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center space-y-8">
+          {/* Product Hunt Embed Badge */}
+          <div className="flex justify-center w-full">
+            <a
+              href="https://www.producthunt.com/products/webpit?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-webpit"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                alt="WebPit - Free, Instant WebP Conversion & Image Compress | Product Hunt"
+                width="250"
+                height="54"
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1091872&theme=light&t=1772870370632"
+              />
+            </a>
+          </div>
+
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full">
             <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <img src="/logo.webp" alt="WebPit Logo" width="128" height="40" className="h-10 w-auto object-contain" />
             </Link>
