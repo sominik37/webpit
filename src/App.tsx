@@ -40,7 +40,7 @@ export default function App() {
       <footer className="bg-white border-t border-gray-200 py-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center space-y-8">
           {/* Product Hunt Embed Badge */}
-          <div className="flex justify-center w-full">
+          <div className="flex flex-wrap justify-center items-center gap-4 w-full">
             <a
               href="https://www.producthunt.com/products/webpit?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-webpit"
               target="_blank"
@@ -51,6 +51,21 @@ export default function App() {
                 width="250"
                 height="54"
                 src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1091872&theme=light&t=1772870370632"
+                className="h-[54px] w-auto"
+              />
+            </a>
+            <a
+              href="https://rankinpublic.xyz/products/webpit.site"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://rankinpublic.xyz/api/badges/badge-featured.png?site=webpit.site"
+                alt="Featured on RankInPublic"
+                title="Featured on RankInPublic"
+                width="250"
+                height="80"
+                className="h-[54px] w-auto"
               />
             </a>
           </div>
