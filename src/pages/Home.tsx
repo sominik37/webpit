@@ -101,6 +101,7 @@ export default function Home() {
         const result = await processImage(img, quality);
 
         if (result.status === 'done') {
+          console.log('📊 GA Event: image_converted', result.originalFile.name);
           window.gtag?.('event', 'image_converted', {
             'event_category': 'conversion',
             'event_label': result.originalFile.name,
@@ -189,6 +190,7 @@ export default function Home() {
     Promise.all(promises).then(results => {
       const successfulConversions = results.filter(r => r.status === 'done');
       if (successfulConversions.length > 0) {
+        console.log('📊 GA Event: batch_reprocess', successfulConversions.length);
         window.gtag?.('event', 'batch_reprocess', {
           'event_category': 'conversion',
           'count': successfulConversions.length,
