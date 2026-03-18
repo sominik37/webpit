@@ -68,6 +68,19 @@ export default function App() {
                 className="h-[54px] w-auto"
               />
             </a>
+            <a
+              href="https://startuups.com//projects/webpit"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://startuups.com//images/badges/startuupscom.badge.svg"
+                alt="Featured on startuups"
+                width="150"
+                height="54"
+                className="h-[54px] w-auto"
+              />
+            </a>
           </div>
 
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full">
