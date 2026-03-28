@@ -20,6 +20,13 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'description',
+      title: 'Meta Description',
+      type: 'text',
+      description: 'Used for SEO and social sharing (150-160 characters recommended).',
+      validation: Rule => Rule.max(200).warning('Longer descriptions may be truncated by search engines.'),
+    }),
+    defineField({
       name: 'author',
       title: 'Author',
       type: 'reference',

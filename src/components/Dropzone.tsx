@@ -50,10 +50,10 @@ export function Dropzone({ onFilesDrop }: DropzoneProps) {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       className={cn(
-        "relative group cursor-pointer w-full h-64 rounded-3xl border-2 border-dashed transition-all duration-200 flex flex-col items-center justify-center gap-4 overflow-hidden",
+        "relative group cursor-pointer w-full h-64 rounded-[2rem] border-2 border-dashed transition-all duration-300 flex flex-col items-center justify-center gap-4 overflow-hidden",
         isDragging 
-          ? "border-black bg-gray-50 scale-[1.01]" 
-          : "border-gray-200 hover:border-gray-300 hover:bg-gray-50/50"
+          ? "border-blue-500 bg-blue-50/50 scale-[1.01] shadow-xl" 
+          : "border-slate-300 hover:border-blue-300 hover:bg-white bg-slate-50/80 shadow-sm hover:shadow-md"
       )}
     >
       <input
@@ -66,15 +66,15 @@ export function Dropzone({ onFilesDrop }: DropzoneProps) {
       
       <div className="relative z-0 flex flex-col items-center text-center p-6">
         <div className={cn(
-          "w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-colors",
-          isDragging ? "bg-black text-white" : "bg-gray-100 text-gray-500 group-hover:bg-gray-200"
+          "w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-all duration-300",
+          isDragging ? "bg-blue-600 text-white shadow-lg scale-110" : "bg-slate-200/60 text-slate-500 group-hover:bg-blue-100 group-hover:text-blue-600"
         )}>
           <Upload className="w-8 h-8" />
         </div>
-        <h3 className="text-lg font-semibold text-gray-900">
+        <h3 className="text-lg font-semibold text-slate-900">
           Drop images here
         </h3>
-        <p className="text-sm text-gray-500 mt-1 max-w-xs">
+        <p className="text-sm text-slate-500 mt-1 max-w-xs">
           or click to browse. Supports JPG, PNG, WEBP, GIF
         </p>
       </div>

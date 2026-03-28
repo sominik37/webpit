@@ -274,10 +274,10 @@ export default function Home({ type = 'default' }: { type?: string }) {
       {/* Controls & Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Settings Card */}
-        <div className="md:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <div className="flex items-center gap-2 mb-4">
-            <Settings2 className="w-5 h-5 text-gray-500" />
-            <h2 className="font-medium">Optimization Settings</h2>
+        <div className="md:col-span-2 bg-white rounded-3xl p-8 shadow-[0_2px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-200/60 transition-all hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.08)]">
+          <div className="flex items-center gap-2 mb-6">
+            <Settings2 className="w-5 h-5 text-blue-600" />
+            <h2 className="font-semibold text-slate-900">Optimization Settings</h2>
           </div>
 
           <div className="space-y-6">
@@ -292,7 +292,7 @@ export default function Home({ type = 'default' }: { type?: string }) {
               onTouchEnd={handleReprocessAll}
               valueDisplay={`${quality}%`}
             />
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-slate-500 pt-2">
               Lower quality results in smaller file sizes but may reduce image fidelity.
               80% is recommended for a good balance.
             </p>
@@ -300,9 +300,9 @@ export default function Home({ type = 'default' }: { type?: string }) {
         </div>
 
         {/* Stats Card */}
-        <div className="bg-black text-white rounded-2xl p-6 shadow-sm flex flex-col justify-between">
-          <div>
-            <h2 className="font-medium text-white/80">Total Savings</h2>
+        <div className="bg-slate-950 text-white rounded-3xl p-8 shadow-xl flex flex-col justify-between relative overflow-hidden">
+          <div className="relative z-10">
+            <h2 className="font-medium text-slate-300">Total Savings</h2>
             <div className="mt-2 flex items-baseline gap-2">
               <span className="text-4xl font-light tracking-tight">
                 {images.length > 0 && totalProcessedSize > 0 ? `${totalSavings}%` : '0%'}
@@ -310,16 +310,18 @@ export default function Home({ type = 'default' }: { type?: string }) {
             </div>
           </div>
 
-          <div className="mt-8 space-y-1">
-            <div className="flex justify-between text-sm text-white/60">
+          <div className="mt-8 space-y-2 relative z-10">
+            <div className="flex justify-between text-sm text-slate-400">
               <span>Original</span>
-              <span className="font-mono">{formatBytes(totalOriginalSize)}</span>
+              <span className="font-mono text-slate-300">{formatBytes(totalOriginalSize)}</span>
             </div>
-            <div className="flex justify-between text-sm text-white">
+            <div className="flex justify-between text-sm text-white font-medium border-t border-slate-800 pt-2">
               <span>Optimized</span>
-              <span className="font-mono">{formatBytes(totalProcessedSize)}</span>
+              <span className="font-mono text-green-400">{formatBytes(totalProcessedSize)}</span>
             </div>
           </div>
+          {/* Subtle background glow effect using pure CSS */}
+          <div className="absolute top-0 right-0 -mr-16 -mt-16 w-48 h-48 bg-blue-500 opacity-20 blur-3xl rounded-full"></div>
         </div>
       </div>
 
@@ -329,7 +331,7 @@ export default function Home({ type = 'default' }: { type?: string }) {
       {/* Image List */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="font-medium text-gray-900">
+          <h3 className="font-semibold text-slate-900 text-lg">
             Processed Images ({images.length})
           </h3>
           {images.length > 0 && (
@@ -362,7 +364,7 @@ export default function Home({ type = 'default' }: { type?: string }) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-12 text-gray-400"
+              className="text-center py-16 text-slate-400 border border-dashed border-slate-200 rounded-3xl bg-slate-50/50"
             >
               <p>No images added yet.</p>
             </motion.div>
@@ -380,28 +382,28 @@ export default function Home({ type = 'default' }: { type?: string }) {
       </div>
 
       {/* Informational Content Section */}
-      <div className="mt-16 space-y-12 border-t border-gray-200 pt-16 text-gray-800">
+      <div className="mt-20 space-y-16 border-t border-slate-200/60 pt-20 text-slate-800">
         {/* How to Guide */}
         <section className="space-y-6">
-          <h2 className="text-3xl font-bold tracking-tight text-black">{currentSEO.heading}</h2>
-          <p className="text-lg text-gray-600">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900">{currentSEO.heading}</h2>
+          <p className="text-lg text-slate-600 max-w-2xl">
             {currentSEO.contentDesc}
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-            <div className="space-y-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
-              <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold">1</div>
-              <h3 className="font-semibold text-lg">Upload Your Photos</h3>
-              <p className="text-sm text-gray-500">{currentSEO.uploadDesc}</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
+            <div className="space-y-4 p-8 bg-white rounded-3xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-bold text-lg shadow-inner">1</div>
+              <h3 className="font-semibold text-xl text-slate-900">Upload Your Photos</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">{currentSEO.uploadDesc}</p>
             </div>
-            <div className="space-y-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
-              <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold">2</div>
-              <h3 className="font-semibold text-lg">Adjust the Quality</h3>
-              <p className="text-sm text-gray-500">Use the "Quality" slider to choose how much you want to shrink the file. 80% is the sweet spot—it makes the file much smaller while keeping the image looking sharp.</p>
+            <div className="space-y-4 p-8 bg-white rounded-3xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-bold text-lg shadow-inner">2</div>
+              <h3 className="font-semibold text-xl text-slate-900">Adjust the Quality</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">Use the "Quality" slider to choose how much you want to shrink the file. 80% is the sweet spot—it makes the file much smaller while keeping the image looking sharp.</p>
             </div>
-            <div className="space-y-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
-              <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold">3</div>
-              <h3 className="font-semibold text-lg">Download & Use</h3>
-              <p className="text-sm text-gray-500">Once processed, your new WebP images are ready. Download them instantly to use on your website, blog, or store.</p>
+            <div className="space-y-4 p-8 bg-white rounded-3xl border border-slate-200/60 shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-bold text-lg shadow-inner">3</div>
+              <h3 className="font-semibold text-xl text-slate-900">Download & Use</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">Once processed, your new WebP images are ready. Download them instantly to use on your website, blog, or store.</p>
             </div>
           </div>
         </section>
@@ -409,41 +411,53 @@ export default function Home({ type = 'default' }: { type?: string }) {
         {/* Why WebP & Comparison Table */}
         <section className="space-y-8">
           <div className="max-w-3xl">
-            <h2 className="text-3xl font-bold tracking-tight text-black">Why Should You Use WebP?</h2>
-            <p className="mt-4 text-lg text-gray-600">
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900">Why Should You Use WebP?</h2>
+            <p className="mt-4 text-lg text-slate-600">
               If you’ve ever wondered why your website feels slow, it’s usually because of "heavy" images. WebP is a modern image format that acts like a "shrink-wrap" for your photos. It keeps the quality high but cuts the file size down significantly.
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
+          <div className="overflow-hidden rounded-3xl border border-slate-200 shadow-sm bg-white">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="p-4 font-semibold text-sm">Feature</th>
-                  <th className="p-4 font-semibold text-sm">Old Formats (JPG/PNG)</th>
-                  <th className="p-4 font-semibold text-sm text-black">WebP (The Modern Way)</th>
+                <tr className="bg-slate-50 border-b border-slate-200/60">
+                  <th className="p-5 font-semibold text-sm text-slate-700">Feature</th>
+                  <th className="p-5 font-semibold text-sm text-slate-700">Old Formats (JPG/PNG)</th>
+                  <th className="p-5 font-semibold text-sm text-slate-900">WebP (The Modern Way)</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
-                <tr>
-                  <td className="p-4 text-sm font-medium">Size</td>
-                  <td className="p-4 text-sm text-gray-500">Large and bulky.</td>
-                  <td className="p-4 text-sm font-medium text-green-600">30% smaller on average.</td>
+              <tbody className="divide-y divide-slate-100">
+                <tr className="hover:bg-slate-50/50 transition-colors">
+                  <td className="p-5 text-sm font-medium text-slate-800">Size</td>
+                  <td className="p-5 text-sm text-slate-500">Large and bulky.</td>
+                  <td className="p-5 text-sm font-medium text-emerald-600 flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    30% smaller on average.
+                  </td>
                 </tr>
-                <tr>
-                  <td className="p-4 text-sm font-medium">Speed</td>
-                  <td className="p-4 text-sm text-gray-500">Slows down your website.</td>
-                  <td className="p-4 text-sm font-medium text-green-600">Loads much faster.</td>
+                <tr className="hover:bg-slate-50/50 transition-colors">
+                  <td className="p-5 text-sm font-medium text-slate-800">Speed</td>
+                  <td className="p-5 text-sm text-slate-500">Slows down your website.</td>
+                  <td className="p-5 text-sm font-medium text-emerald-600 flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    Loads much faster.
+                  </td>
                 </tr>
-                <tr>
-                  <td className="p-4 text-sm font-medium">Quality</td>
-                  <td className="p-4 text-sm text-gray-500">Loses detail when shrunk.</td>
-                  <td className="p-4 text-sm font-medium text-green-600">Stays crisp even at small sizes.</td>
+                <tr className="hover:bg-slate-50/50 transition-colors">
+                  <td className="p-5 text-sm font-medium text-slate-800">Quality</td>
+                  <td className="p-5 text-sm text-slate-500">Loses detail when shrunk.</td>
+                  <td className="p-5 text-sm font-medium text-emerald-600 flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    Stays crisp even at small sizes.
+                  </td>
                 </tr>
-                <tr>
-                  <td className="p-4 text-sm font-medium">Transparency</td>
-                  <td className="p-4 text-sm text-gray-500">Only PNGs can have clear backgrounds.</td>
-                  <td className="p-4 text-sm font-medium text-green-600">Supports clear backgrounds with tiny file sizes.</td>
+                <tr className="hover:bg-slate-50/50 transition-colors">
+                  <td className="p-5 text-sm font-medium text-slate-800">Transparency</td>
+                  <td className="p-5 text-sm text-slate-500">Only PNGs can have clear backgrounds.</td>
+                  <td className="p-5 text-sm font-medium text-emerald-600 flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                    Supports clear backgrounds with tiny file sizes.
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -451,66 +465,70 @@ export default function Home({ type = 'default' }: { type?: string }) {
         </section>
 
         {/* FAQ Section */}
-        <section className="space-y-8">
-          <h2 className="text-3xl font-bold tracking-tight text-black text-center">Frequently Asked Questions (FAQ)</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-            <div className="space-y-2">
-              <h3 className="font-bold text-lg">What is a WebP file?</h3>
-              <p className="text-gray-600">Think of WebP as a "smarter" version of a photo. It was created by Google to help the internet move faster. It compresses the data inside an image much better than older formats like JPEG or PNG.</p>
+        <section className="space-y-10 pt-8">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 text-center">Frequently Asked Questions (FAQ)</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+            <div className="space-y-3">
+              <h3 className="font-semibold text-lg text-slate-900">What is a WebP file?</h3>
+              <p className="text-slate-600 leading-relaxed">Think of WebP as a "smarter" version of a photo. It was created by Google to help the internet move faster. It compresses the data inside an image much better than older formats like JPEG or PNG.</p>
             </div>
-            <div className="space-y-2">
-              <h3 className="font-bold text-lg">Will I lose quality if I compress my images?</h3>
-              <p className="text-gray-600">Technically, yes, but your eyes likely won't see the difference! At our recommended 80% setting, the file size drops dramatically while the image still looks beautiful to the human eye.</p>
+            <div className="space-y-3">
+              <h3 className="font-semibold text-lg text-slate-900">Will I lose quality if I compress my images?</h3>
+              <p className="text-slate-600 leading-relaxed">Technically, yes, but your eyes likely won't see the difference! At our recommended 80% setting, the file size drops dramatically while the image still looks beautiful to the human eye.</p>
             </div>
-            <div className="space-y-2">
-              <h3 className="font-bold text-lg">Is WebP supported by all browsers?</h3>
-              <p className="text-gray-600">Yes! All modern browsers—including Google Chrome, Apple Safari, Microsoft Edge, and Mozilla Firefox—fully support WebP images. If you use them on your website, everyone will be able to see them.</p>
+            <div className="space-y-3">
+              <h3 className="font-semibold text-lg text-slate-900">Is WebP supported by all browsers?</h3>
+              <p className="text-slate-600 leading-relaxed">Yes! All modern browsers—including Google Chrome, Apple Safari, Microsoft Edge, and Mozilla Firefox—fully support WebP images. If you use them on your website, everyone will be able to see them.</p>
             </div>
-            <div className="space-y-2">
-              <h3 className="font-bold text-lg">Why does image size matter for SEO?</h3>
-              <p className="text-gray-600">Google loves fast websites. When your images are small and load quickly, Google ranks your site higher in search results. Using WebP is one of the easiest ways to give your website a "speed boost."</p>
+            <div className="space-y-3">
+              <h3 className="font-semibold text-lg text-slate-900">Why does image size matter for SEO?</h3>
+              <p className="text-slate-600 leading-relaxed">Google loves fast websites. When your images are small and load quickly, Google ranks your site higher in search results. Using WebP is one of the easiest ways to give your website a "speed boost."</p>
             </div>
           </div>
         </section>
 
         {/* Benefits Section */}
-        <section className="bg-black text-white rounded-3xl p-10 mb-8 space-y-8">
-          <h2 className="text-3xl font-bold tracking-tight">The Benefits of Using WebPit for Your Website</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="flex gap-4">
-              <div className="shrink-0 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
-                <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
+        <section className="bg-slate-950 text-white rounded-[2.5rem] p-12 mb-8 space-y-10 relative overflow-hidden shadow-2xl">
+          <div className="absolute top-0 right-0 -mr-32 -mt-32 w-96 h-96 bg-blue-500 opacity-10 blur-3xl rounded-full"></div>
+          <div className="relative z-10 w-full">
+             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-2">The Benefits of Using WebPit for Your Website</h2>
+             <p className="text-slate-400 mb-10 text-lg">Supercharge your site’s speed directly from your browser.</p>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+              <div className="flex gap-4">
+                <div className="shrink-0 w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-lg text-slate-100">Better Google Rankings</h4>
+                  <p className="text-slate-400 text-sm mt-1 leading-relaxed">Faster sites rank higher. By shrinking your images, you're telling search engines your site is user-friendly.</p>
+                </div>
               </div>
-              <div>
-                <h4 className="font-bold">Better Google Rankings</h4>
-                <p className="text-gray-400 text-sm">Faster sites rank higher. By shrinking your images, you're telling search engines your site is user-friendly.</p>
+              <div className="flex gap-4">
+                <div className="shrink-0 w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-lg text-slate-100">Save Storage Space</h4>
+                  <p className="text-slate-400 text-sm mt-1 leading-relaxed">Smaller files mean you use less space on your web hosting or cloud storage.</p>
+                </div>
               </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="shrink-0 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
-                <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
+              <div className="flex gap-4">
+                <div className="shrink-0 w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-lg text-slate-100">Better Mobile Experience</h4>
+                  <p className="text-slate-400 text-sm mt-1 leading-relaxed">People browsing on phones often have slower data. Small WebP images load instantly on mobile devices.</p>
+                </div>
               </div>
-              <div>
-                <h4 className="font-bold">Save Storage Space</h4>
-                <p className="text-gray-400 text-sm">Smaller files mean you use less space on your web hosting or cloud storage.</p>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="shrink-0 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
-                <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
-              </div>
-              <div>
-                <h4 className="font-bold">Better Mobile Experience</h4>
-                <p className="text-gray-400 text-sm">People browsing on phones often have slower data. Small WebP images load instantly on mobile devices, keeping your visitors happy.</p>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="shrink-0 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
-                <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
-              </div>
-              <div>
-                <h4 className="font-bold">100% Free & Private</h4>
-                <p className="text-gray-400 text-sm">Your images are processed right in your browser. We don't store your photos on our servers, so your privacy is always protected.</p>
+              <div className="flex gap-4">
+                <div className="shrink-0 w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-lg text-slate-100">100% Free & Private</h4>
+                  <p className="text-slate-400 text-sm mt-1 leading-relaxed">Your images are processed right in your browser. We don't store your photos on our servers.</p>
+                </div>
               </div>
             </div>
           </div>

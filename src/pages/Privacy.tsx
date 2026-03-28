@@ -11,13 +11,16 @@ export default function Privacy() {
         <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-3xl mx-auto py-12 px-4 sm:px-6"
+            className="max-w-4xl mx-auto py-16 px-4 sm:px-6"
         >
-            <h1 className="text-4xl font-bold tracking-tight text-black mb-8">Privacy Policy</h1>
+            <div className="text-center mb-16">
+                <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 mb-4">Privacy Policy</h1>
+                <p className="text-slate-500 text-lg">How we protect your images and data.</p>
+            </div>
 
-            <div className="prose prose-slate max-w-none space-y-6 text-gray-600">
+            <div className="bg-white p-8 md:p-12 lg:p-16 rounded-[2.5rem] border border-slate-200/50 shadow-sm prose prose-slate max-w-none text-slate-600 leading-relaxed">
                 <section>
-                    <h2 className="text-2xl font-semibold text-black mb-4">Your Privacy is Our Priority</h2>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-4">Your Privacy is Our Priority</h2>
                     <p>
                         At WebPit, we believe your photos are your business. That's why we built our tool to be 100% private.
                         Unlike other online converters, we do not upload your images to any server. All processing—including conversion and compression—happens right in your browser.
@@ -25,7 +28,7 @@ export default function Privacy() {
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-semibold text-black mb-4">What Data We Collect</h2>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-4">What Data We Collect</h2>
                     <p>
                         The short answer: <strong>None.</strong>
                     </p>
@@ -37,27 +40,27 @@ export default function Privacy() {
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-semibold text-black mb-4">How It Works</h2>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-4">How It Works</h2>
                     <p>
                         WebPit uses your device's own power (CPU/GPU) to handle the image math. When you drop an image here, your browser temporarily holds it in its memory, performs the conversion to WebP, and lets you download the result. Once you close the tab, that temporary data is wiped clean.
                     </p>
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-semibold text-black mb-4">Analytics</h2>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-4">Analytics</h2>
                     <p>
                         We use minimal, high-level analytics (via Vercel Speed Insights) simply to see how fast the site loads and if there are technical errors. This data is anonymous and does not include your images or personal details.
                     </p>
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-semibold text-black mb-4">Contact</h2>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-4">Contact</h2>
                     <p>
                         If you have any questions about our privacy-first approach, feel free to reach out via our GitHub repository.
                     </p>
                 </section>
 
-                <p className="text-sm text-gray-400 pt-8">
+                <p className="text-xs text-slate-400 pt-8 border-t border-slate-100 mt-12">
                     Last updated: March 3, 2026
                 </p>
             </div>
