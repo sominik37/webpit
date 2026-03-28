@@ -5,6 +5,8 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import Home from './pages/Home';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 
 export default function App() {
   return (
@@ -15,7 +17,10 @@ export default function App() {
           <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <img src="/logo.webp" alt="WebPit Logo" width="160" height="48" className="h-12 w-auto object-contain" />
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
+            <Link to="/blog" className="text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors hidden sm:block">
+              Blog
+            </Link>
             <a
               href="https://developers.google.com/speed/webp"
               target="_blank"
@@ -30,7 +35,14 @@ export default function App() {
 
       <main className="flex-grow w-full">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home type="default" />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/png-to-webp" element={<Home type="png" />} />
+          <Route path="/jpg-to-webp" element={<Home type="jpg" />} />
+          <Route path="/jpeg-to-webp" element={<Home type="jpeg" />} />
+          <Route path="/gif-to-webp" element={<Home type="gif" />} />
+          <Route path="/compress-webp" element={<Home type="compress" />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
         </Routes>

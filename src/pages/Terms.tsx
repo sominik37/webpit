@@ -1,7 +1,12 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { useSEO } from '../hooks/useSEO';
 
 export default function Terms() {
+    useSEO({
+      title: "Terms of Service | WebPit",
+      description: "Terms of Service for WebPit. Completely free tool for personal or commercial use."
+    });
     return (
         <motion.div
             initial={{ opacity: 0, y: 10 }}

@@ -7,6 +7,8 @@ import { Download, Trash2, Settings2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { formatBytes } from '../lib/utils';
 
+import { useSEO } from '../hooks/useSEO';
+
 // Declare gtag for TypeScript
 declare global {
   interface Window {
@@ -14,10 +16,58 @@ declare global {
   }
 }
 
-export default function Home() {
+export default function Home({ type = 'default' }: { type?: string }) {
   const [images, setImages] = useState<ProcessedImage[]>([]);
   const [quality, setQuality] = useState(80);
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const seoData = {
+    default: {
+      title: "WebPit | Fast, Private & Free WebP Image Converter",
+      description: "Convert JPG and PNG to WebP instantly. 100% client-side processing means your images never leave your browser. No signups, no limits, just speed.",
+      heading: "How to Convert and Compress Your Images",
+      contentDesc: "Using WebPit is as easy as \"Drag, Slide, and Save.\" You don’t need to be a tech expert to get professional results.",
+      uploadDesc: "Drag and drop your JPG, PNG, or GIF files directly into the box above. You can even upload multiple images at once!"
+    },
+    png: {
+      title: "Convert PNG to WebP Free | Maintain Transparency",
+      description: "Fastest way to convert PNG to WebP with transparent backgrounds. Shrink file sizes up to 80% with no loss in visual quality. 100% free and private.",
+      heading: "Easily Convert PNG to WebP in Seconds",
+      contentDesc: "Looking to save space while keeping transparent backgrounds? WebPit converts your transparent PNGs to much smaller WebP files instantly.",
+      uploadDesc: "Drag and drop your PNG files directly into the box above. WebPit preserves alpha transparency perfectly."
+    },
+    jpg: {
+      title: "Convert JPG to WebP Free | Shrink Image Sizes Instantly",
+      description: "Convert your heavy JPG images to fast-loading WebP format. Improve your website speed and SEO rankings today without slow servers.",
+      heading: "Convert JPG to WebP for Faster Load Times",
+      contentDesc: "WebPit takes your heavy JPG files and shrinks them to WebP format, offering immense file size savings while maintaining crisp details.",
+      uploadDesc: "Drag and drop your JPG images directly into the box above to start saving space instantly."
+    },
+    jpeg: {
+      title: "Convert JPEG to WebP Free | Optimize for Web",
+      description: "Optimize JPEG photos to WebP exactly in your browser. Dramatically reduce file size for your website without losing perceptible quality.",
+      heading: "Shrink JPEG to WebP Images Quickly",
+      contentDesc: "Fast websites rank higher on Google. Convert your JPEGs to the modern WebP format securely in your browser to boost performance.",
+      uploadDesc: "Drag and drop your JPEG photos directly into the box above."
+    },
+    gif: {
+      title: "Convert GIF to Static WebP | Compress Heavy Frames",
+      description: "Turn heavy GIFs into optimized WebP formats in seconds. Fully private browser-based conversion. Save bandwidth today.",
+      heading: "Optimize GIF to WebP Quickly",
+      contentDesc: "Turn those bulky GIFs into highly optimized WebP files instantly for much better loading performance.",
+      uploadDesc: "Drag and drop your GIF files directly into the box above."
+    },
+    compress: {
+      title: "Compress WebP Images | Advanced WebP Optimizer",
+      description: "Compress and optimize your existing WebP images even further. Fine-tune image quality for the absolute best performance on the web.",
+      heading: "Compress WebP for Ultimate Performance",
+      contentDesc: "Need to squeeze every last byte out of your images? Use our advanced sliders to compress standard image files or existing WebP formats without quality loss.",
+      uploadDesc: "Drag and drop your images to compress them directly in your browser."
+    }
+  };
+
+  const currentSEO = seoData[type as keyof typeof seoData] || seoData.default;
+  useSEO({ title: currentSEO.title, description: currentSEO.description });
 
   // Process a single image
   const processImage = async (img: ProcessedImage, targetQuality: number) => {
@@ -333,15 +383,15 @@ export default function Home() {
       <div className="mt-16 space-y-12 border-t border-gray-200 pt-16 text-gray-800">
         {/* How to Guide */}
         <section className="space-y-6">
-          <h2 className="text-3xl font-bold tracking-tight text-black">How to Convert and Compress Your Images</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-black">{currentSEO.heading}</h2>
           <p className="text-lg text-gray-600">
-            Using WebPit is as easy as "Drag, Slide, and Save." You don’t need to be a tech expert to get professional results.
+            {currentSEO.contentDesc}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
             <div className="space-y-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
               <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold">1</div>
               <h3 className="font-semibold text-lg">Upload Your Photos</h3>
-              <p className="text-sm text-gray-500">Drag and drop your JPG, PNG, or GIF files directly into the box above. You can even upload multiple images at once!</p>
+              <p className="text-sm text-gray-500">{currentSEO.uploadDesc}</p>
             </div>
             <div className="space-y-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm">
               <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold">2</div>

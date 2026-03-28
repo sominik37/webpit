@@ -1,7 +1,12 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { useSEO } from '../hooks/useSEO';
 
 export default function Privacy() {
+    useSEO({
+      title: "Privacy Policy | WebPit",
+      description: "Read about how your photos stay 100% private. All processing—including conversion and compression—happens right in your browser."
+    });
     return (
         <motion.div
             initial={{ opacity: 0, y: 10 }}
