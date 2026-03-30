@@ -94,7 +94,10 @@
 
     mixpanel.init('ac6e52d0333ff0e43f8d43382a6193b4', {
       autocapture: true,
+      track_pageview: true,
+      persistence: 'localStorage',
       record_sessions_percent: 100,
+      record_heatmap_data: true,
     })
   </script>
 </head>

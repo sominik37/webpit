@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Sparkles } from 'lucide-react';
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import Home from './pages/Home';
@@ -9,6 +9,13 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 
 export default function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Notify Mixpanel of a page view
+    window.mixpanel?.track_pageview();
+  }, [location]);
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
       {/* Header */}
