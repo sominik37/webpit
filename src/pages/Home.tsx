@@ -13,7 +13,6 @@ import { useSEO } from '../hooks/useSEO';
 declare global {
   interface Window {
     gtag: (command: string, action: string, params?: any) => void;
-    mixpanel: any;
   }
 }
 
@@ -159,14 +158,6 @@ export default function Home({ type = 'default' }: { type?: string }) {
             'is_original_kept': result.isOriginalKept,
             'quality': quality
           });
-          
-          window.mixpanel?.track('Image Converted', {
-            'File Name': result.originalFile.name,
-            'Is Original Kept': result.isOriginalKept,
-            'Quality': quality,
-            'Original Size': result.originalSize,
-            'Processed Size': result.processedSize
-          });
         }
 
         setImages(current =>
@@ -256,22 +247,8 @@ export default function Home({ type = 'default' }: { type?: string }) {
             'quality': quality
           });
 
-          window.mixpanel?.track('Batch Reprocess', {
-            'Count': successfulConversions.length,
-            'Quality': quality
-          });
-
           // Also fire individual events for each image in the batch
           successfulConversions.forEach(result => {
-             window.mixpanel?.track('Image Converted', {
-              'File Name': result.originalFile.name,
-              'Is Original Kept': result.isOriginalKept,
-              'Quality': quality,
-              'Original Size': result.originalSize,
-              'Processed Size': result.processedSize,
-              'Is Batch': true
-            });
-            
             window.gtag?.('event', 'image_converted', {
               'event_category': 'conversion',
               'event_label': result.originalFile.name,

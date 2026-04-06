@@ -1,28 +1,37 @@
-import React, { useEffect } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import React, { Suspense, lazy } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
 import { Sparkles } from 'lucide-react';
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import Home from './pages/Home';
-import Privacy from './pages/Privacy';
-import Terms from './pages/Terms';
-import Blog from './pages/Blog';
-import BlogPost from './pages/BlogPost';
+
+// Lazy load pages for performance optimization
+const Home = lazy(() => import('./pages/Home'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Terms = lazy(() => import('./pages/Terms'));
+const Blog = lazy(() => import('./pages/Blog'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
+
+// Simple loading fallback
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-[60vh]">
+    <div className="w-10 h-10 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin"></div>
+  </div>
+);
 
 export default function App() {
-  const location = useLocation();
-
-  useEffect(() => {
-    // Notify Mixpanel of a page view
-    window.mixpanel?.track_pageview();
-  }, [location]);
-
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
       {/* Header */}
       <header className="bg-white/70 backdrop-blur-lg border-b border-slate-200/50 sticky top-0 z-50 transition-all duration-300">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <img src="/logo.webp" alt="WebPit Logo" width="160" height="48" className="h-12 w-auto object-contain" />
+            <img 
+              src="/logo.webp" 
+              alt="WebPit Logo" 
+              width="160" 
+              height="48" 
+              className="h-12 w-auto object-contain" 
+              fetchpriority="high"
+            />
           </Link>
           <div className="flex items-center gap-6">
             <Link to="/blog" className="text-sm font-medium text-slate-800 hover:text-blue-600 transition-colors hidden sm:block">
@@ -41,18 +50,20 @@ export default function App() {
       </header>
 
       <main className="flex-grow w-full">
-        <Routes>
-          <Route path="/" element={<Home type="default" />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<BlogPost />} />
-          <Route path="/png-to-webp" element={<Home type="png" />} />
-          <Route path="/jpg-to-webp" element={<Home type="jpg" />} />
-          <Route path="/jpeg-to-webp" element={<Home type="jpeg" />} />
-          <Route path="/gif-to-webp" element={<Home type="gif" />} />
-          <Route path="/compress-webp" element={<Home type="compress" />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms" element={<Terms />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Home type="default" />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/png-to-webp" element={<Home type="png" />} />
+            <Route path="/jpg-to-webp" element={<Home type="jpg" />} />
+            <Route path="/jpeg-to-webp" element={<Home type="jpeg" />} />
+            <Route path="/gif-to-webp" element={<Home type="gif" />} />
+            <Route path="/compress-webp" element={<Home type="compress" />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+          </Routes>
+        </Suspense>
       </main>
 
       {/* Footer */}
@@ -71,6 +82,8 @@ export default function App() {
                 height="54"
                 src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1091872&theme=light&t=1772870370632"
                 className="h-[54px] w-auto hover:scale-105 transition-transform duration-300 shadow-sm rounded border border-slate-100"
+                loading="lazy"
+                decoding="async"
               />
             </a>
             <a
@@ -85,6 +98,8 @@ export default function App() {
                 width="250"
                 height="80"
                 className="h-[54px] w-auto hover:scale-105 transition-transform duration-300 shadow-sm rounded border border-slate-100"
+                loading="lazy"
+                decoding="async"
               />
             </a>
             <a
@@ -98,13 +113,22 @@ export default function App() {
                 width="150"
                 height="54"
                 className="h-[54px] w-auto hover:scale-105 transition-transform duration-300 shadow-sm rounded border border-slate-100 bg-white"
+                loading="lazy"
+                decoding="async"
               />
             </a>
           </div>
 
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full">
             <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <img src="/logo.webp" alt="WebPit Logo" width="128" height="40" className="h-10 w-auto object-contain" />
+              <img 
+                src="/logo.webp" 
+                alt="WebPit Logo" 
+                width="128" 
+                height="40" 
+                className="h-10 w-auto object-contain" 
+                loading="lazy"
+              />
             </Link>
 
             <p className="text-slate-500 text-sm">
