@@ -18,6 +18,27 @@ const PageLoader = () => (
 );
 
 export default function App() {
+  React.useEffect(() => {
+    // Delay Google Analytics loading by 2 seconds to prioritize main content paint
+    const timer = setTimeout(() => {
+      const script1 = document.createElement('script');
+      script1.async = true;
+      script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-86TZ4T7C8W';
+      document.head.appendChild(script1);
+
+      const script2 = document.createElement('script');
+      script2.innerHTML = `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-86TZ4T7C8W');
+      `;
+      document.head.appendChild(script2);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
       {/* Header */}
