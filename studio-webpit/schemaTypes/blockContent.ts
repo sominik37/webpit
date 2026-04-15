@@ -69,5 +69,10 @@ export default defineType({
         withFilename: true,
       },
     }),
+    defineArrayMember({
+      name: 'richTableBlock',
+      title: 'Rich Table Block',
+      type: 'richTableBlock',
+    }),
   ],
 })
