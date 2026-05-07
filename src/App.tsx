@@ -9,6 +9,9 @@ const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
+const Download = lazy(() => import('./pages/Download'));
+const DownloadSuccess = lazy(() => import('./pages/DownloadSuccess'));
+const Refund = lazy(() => import('./pages/Refund'));
 
 // Simple loading fallback
 const PageLoader = () => (
@@ -41,8 +44,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
-      {/* Header */}
-      <header className="bg-white/70 backdrop-blur-lg border-b border-slate-200/50 sticky top-0 z-50 transition-all duration-300">
+      {/* Header - Simplified for Desktop */}
+      <header className="bg-white/70 border-b border-slate-200/50 transition-all duration-300">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <img 
@@ -55,17 +58,20 @@ export default function App() {
             />
           </Link>
           <div className="flex items-center gap-6">
-            <Link to="/blog" className="text-sm font-medium text-slate-800 hover:text-blue-600 transition-colors hidden sm:block">
-              Blog
-            </Link>
-            <a
-              href="https://developers.google.com/speed/webp"
-              target="_blank"
-              rel="noreferrer"
-              className="text-sm text-slate-500 hover:text-slate-900 transition-colors hidden sm:block"
-            >
-              About WebP
-            </a>
+              <Link to="/blog" className="text-sm font-medium text-slate-800 hover:text-blue-600 transition-colors hidden sm:block">
+                Blog
+              </Link>
+              <Link to="/download" className="text-sm font-medium text-slate-800 hover:text-blue-600 transition-colors hidden sm:block">
+                Desktop App
+              </Link>
+              <a
+                href="https://developers.google.com/speed/webp"
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm text-slate-500 hover:text-slate-900 transition-colors hidden sm:block"
+              >
+                About WebP
+              </a>
           </div>
         </div>
       </header>
@@ -83,94 +89,98 @@ export default function App() {
             <Route path="/compress-webp" element={<Home type="compress" />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/download" element={<Download />} />
+            <Route path="/download/success" element={<DownloadSuccess />} />
+            <Route path="/refund" element={<Refund />} />
           </Routes>
         </Suspense>
       </main>
 
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200/50 py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center space-y-8">
-          {/* Product Hunt Embed Badge */}
-          <div className="flex flex-wrap justify-center items-center gap-4 w-full">
-            <a
-              href="https://www.producthunt.com/products/webpit?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-webpit"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                alt="WebPit - Free, Instant WebP Conversion & Image Compress | Product Hunt"
-                width="250"
-                height="54"
-                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1091872&theme=light&t=1772870370632"
-                className="h-[54px] w-auto hover:scale-105 transition-transform duration-300 shadow-sm rounded border border-slate-100"
-                loading="lazy"
-                decoding="async"
-              />
-            </a>
-            <a
-              href="https://rankinpublic.xyz/products/webpit.site"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src="https://rankinpublic.xyz/api/badges/badge-featured.png?site=webpit.site"
-                alt="Featured on RankInPublic"
-                title="Featured on RankInPublic"
-                width="250"
-                height="80"
-                className="h-[54px] w-auto hover:scale-105 transition-transform duration-300 shadow-sm rounded border border-slate-100"
-                loading="lazy"
-                decoding="async"
-              />
-            </a>
-            <a
-              href="https://startuups.com//projects/webpit"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                src="https://startuups.com//images/badges/startuupscom.badge.svg"
-                alt="Featured on startuups"
-                width="150"
-                height="54"
-                className="h-[54px] w-auto hover:scale-105 transition-transform duration-300 shadow-sm rounded border border-slate-100 bg-white"
-                loading="lazy"
-                decoding="async"
-              />
-            </a>
-          </div>
-
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full">
-            <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <img 
-                src="/logo.webp" 
-                alt="WebPit Logo" 
-                width="128" 
-                height="40" 
-                className="h-10 w-auto object-contain" 
-                loading="lazy"
-              />
-            </Link>
-
-            <p className="text-slate-500 text-sm">
-              © {new Date().getFullYear()} WebPit. Processed locally for your privacy.
-            </p>
-
-            <div className="flex items-center gap-6">
-              <Link to="/privacy" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Privacy</Link>
-              <Link to="/terms" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Terms</Link>
-              <a href="/sitemap.xml" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Sitemap</a>
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center space-y-8">
+            {/* Product Hunt Embed Badge */}
+            <div className="flex flex-wrap justify-center items-center gap-4 w-full">
               <a
-                href="https://github.com"
+                href="https://www.producthunt.com/products/webpit?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-webpit"
                 target="_blank"
-                rel="noreferrer"
-                className="text-sm text-slate-400 hover:text-slate-900 transition-colors"
+                rel="noopener noreferrer"
               >
-                GitHub
+                <img
+                  alt="WebPit - Free, Instant WebP Conversion & Image Compress | Product Hunt"
+                  width="250"
+                  height="54"
+                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1091872&theme=light&t=1772870370632"
+                  className="h-[54px] w-auto hover:scale-105 transition-transform duration-300 shadow-sm rounded border border-slate-100"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+              <a
+                href="https://rankinpublic.xyz/products/webpit.site"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="https://rankinpublic.xyz/api/badges/badge-featured.png?site=webpit.site"
+                  alt="Featured on RankInPublic"
+                  title="Featured on RankInPublic"
+                  width="250"
+                  height="80"
+                  className="h-[54px] w-auto hover:scale-105 transition-transform duration-300 shadow-sm rounded border border-slate-100"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+              <a
+                href="https://startuups.com//projects/webpit"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="https://startuups.com//images/badges/startuupscom.badge.svg"
+                  alt="Featured on startuups"
+                  width="150"
+                  height="54"
+                  className="h-[54px] w-auto hover:scale-105 transition-transform duration-300 shadow-sm rounded border border-slate-100 bg-white"
+                  loading="lazy"
+                  decoding="async"
+                />
               </a>
             </div>
+
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6 w-full">
+              <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <img 
+                  src="/logo.webp" 
+                  alt="WebPit Logo" 
+                  width="128" 
+                  height="40" 
+                  className="h-10 w-auto object-contain" 
+                  loading="lazy"
+                />
+              </Link>
+
+              <p className="text-slate-500 text-sm">
+                © {new Date().getFullYear()} WebPit. Processed locally for your privacy.
+              </p>
+
+              <div className="flex items-center gap-6">
+                <Link to="/privacy" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Privacy</Link>
+                <Link to="/terms" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Terms</Link>
+                <Link to="/refund" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Refunds</Link>
+                <a href="/sitemap.xml" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Sitemap</a>
+                <a
+                  href="https://github.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm text-slate-400 hover:text-slate-900 transition-colors"
+                >
+                  GitHub
+                </a>
+              </div>
+            </div>
           </div>
-        </div>
       </footer>
       <SpeedInsights />
     </div>
