@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion } from 'motion/react';
 import {
   Download,
@@ -11,10 +11,10 @@ import {
   Apple,
   ArrowRight,
   Check,
-  Star,
 } from 'lucide-react';
 import { useSEO } from '../hooks/useSEO';
 import { cn } from '../lib/utils';
+import { getPaddle } from '../lib/paddle';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -24,7 +24,7 @@ interface Platform {
   icon: React.ReactNode;
   available: boolean;
   badge?: string;
-  polarUrl: string;
+  priceId: string;
   version?: string;
   requirement?: string;
 }
@@ -39,6 +39,8 @@ interface Feature {
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
+const IS_DEV = import.meta.env.DEV;
+
 const PLATFORMS: Platform[] = [
   {
     id: 'mac',
@@ -46,7 +48,9 @@ const PLATFORMS: Platform[] = [
     icon: <Apple className="w-5 h-5" />,
     available: true,
     badge: 'Available now',
-    polarUrl: 'https://buy.polar.sh/polar_cl_s20KA3nlF9vcFcDjYlTxITkKRPQs1M1ONmqNw1IL4YR', // ← replace
+    priceId: IS_DEV
+      ? 'pri_INSERT_SANDBOX_PRICE_ID'          // ← sandbox price ID for local testing
+      : 'pro_01kr0qfyepywgz0yg7de124nsj',      // ← your live price ID
     version: '1.0.2',
     requirement: 'macOS 26 Tahoe or later · Apple Silicon',
   },
@@ -61,7 +65,7 @@ const PLATFORMS: Platform[] = [
     ),
     available: false,
     badge: 'Coming soon',
-    polarUrl: '#',
+    priceId: '',
   },
   {
     id: 'linux',
@@ -73,7 +77,7 @@ const PLATFORMS: Platform[] = [
     ),
     available: false,
     badge: 'Coming soon',
-    polarUrl: '#',
+    priceId: '',
   },
 ];
 
@@ -175,6 +179,16 @@ export default function DownloadPage() {
   const [activePlatform, setActivePlatform] = useState<string>('mac');
   const selected = PLATFORMS.find(p => p.id === activePlatform)!;
 
+  const openCheckout = useCallback(async (priceId: string) => {
+    const paddle = await getPaddle();
+    paddle?.Checkout.open({
+      items: [{ priceId, quantity: 1 }],
+      settings: {
+        successUrl: 'https://webpit.site/download/success',
+      },
+    });
+  }, []);;
+
   useSEO({
     title: 'Download WebPit — Native App for macOS',
     description:
@@ -245,16 +259,14 @@ export default function DownloadPage() {
             <div className="flex flex-col items-center gap-3">
               <p className="text-slate-400 text-sm font-medium">One-time purchase · No subscription</p>
               {selected.available ? (
-                <a
-                  href={selected.polarUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => openCheckout(selected.priceId)}
                   className="inline-flex items-center gap-3 bg-white text-slate-900 font-bold px-8 py-4 rounded-2xl hover:bg-slate-100 transition-all hover:shadow-xl hover:scale-[1.02] text-base"
                 >
                   <Download className="w-5 h-5" />
                   Download for {selected.label} — $8.99
                   <ArrowRight className="w-4 h-4" />
-                </a>
+                </button>
               ) : (
                 <button
                   disabled
@@ -406,16 +418,14 @@ export default function DownloadPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href={PLATFORMS.find(p => p.id === 'mac')!.polarUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => openCheckout(PLATFORMS.find(p => p.id === 'mac')!.priceId)}
               className="inline-flex items-center gap-3 bg-white text-slate-900 font-bold px-8 py-4 rounded-2xl hover:bg-slate-100 transition-all hover:shadow-xl hover:scale-[1.02] text-base w-full sm:w-auto justify-center"
             >
               <Apple className="w-5 h-5" />
               Download for macOS — $8.99
               <ArrowRight className="w-4 h-4" />
-            </a>
+            </button>
           </div>
 
           {PLATFORMS.find(p => p.id === 'mac')?.requirement && (

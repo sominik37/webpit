@@ -34,21 +34,34 @@ export default function Terms() {
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">3. No Guarantees</h2>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-4">3. WebPit Desktop App — Paid Product</h2>
+                    <p>
+                        WebPit for Desktop is a paid application sold by <strong>WebPit</strong> at a one-time purchase price of <strong>$8.99 USD</strong>. Payments are processed securely by <strong>Paddle.com</strong>, our authorized reseller and Merchant of Record. By completing a purchase, you agree to Paddle's terms of service in addition to these terms.
+                    </p>
+                    <p>
+                        Upon successful payment, you will receive a download link via email. The license grants you a personal, non-transferable right to install and use the application on your own devices.
+                    </p>
+                    <p>
+                        For refund requests, please refer to our <a href="/refund" className="text-blue-600 hover:underline">Refund Policy</a>. We offer a 14-day money-back guarantee.
+                    </p>
+                </section>
+
+                <section>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-4">4. No Guarantees</h2>
                     <p>
                         While we strive for the best possible compression, we provide this tool "as is." We cannot guarantee that every image will result in a specific file size or quality level. The final result depends heavily on the original file provided.
                     </p>
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">4. Limitations of Liability</h2>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-4">5. Limitations of Liability</h2>
                     <p>
                         WebPit is not responsible for any data loss, quality issues, or browser crashes that might occur during the processing of your images. Since everything happens locally on your computer, you retain full responsibility for your original files.
                     </p>
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">5. Modifications</h2>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-4">6. Modifications</h2>
                     <p>
                         We may update these terms or the tool itself from time to time to improve performance or security.
                     </p>
