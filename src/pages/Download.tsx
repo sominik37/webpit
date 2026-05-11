@@ -57,7 +57,7 @@ const PLATFORMS: Platform[] = [
     badge: 'Available now',
     priceId: IS_DEV
       ? 'pri_INSERT_SANDBOX_PRICE_ID'          // ← sandbox price ID for local testing
-      : 'pro_01kr0qfyepywgz0yg7de124nsj',      // ← your live price ID
+      : 'pri_01kr0qv07fh1ek8cc64etfgbtg',      // ← your live price ID
     version: '1.0.2',
     requirement: 'macOS 26 Tahoe or later · Apple Silicon',
   },
@@ -214,7 +214,7 @@ export default function DownloadPage() {
     paddle?.Checkout.open({
       items: [{ priceId, quantity: 1 }],
       settings: {
-        successUrl: 'https://webpit.site/download/success',
+        successUrl: `${window.location.origin}/download/success`,
       },
     });
   }, []);;
