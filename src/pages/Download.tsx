@@ -46,8 +46,6 @@ interface Feature {
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const IS_DEV = import.meta.env.DEV;
-
 const PLATFORMS: Platform[] = [
   {
     id: 'mac',
@@ -55,9 +53,7 @@ const PLATFORMS: Platform[] = [
     icon: <AppleLogo className="w-5 h-5" />,
     available: true,
     badge: 'Available now',
-    priceId: IS_DEV
-      ? 'pri_INSERT_SANDBOX_PRICE_ID'          // ← sandbox price ID for local testing
-      : 'pri_01kr0qv07fh1ek8cc64etfgbtg',      // ← your live price ID
+    priceId: 'pri_01kr0qv07fh1ek8cc64etfgbtg',
     version: '1.0.2',
     requirement: 'macOS 26 Tahoe or later · Apple Silicon',
   },
