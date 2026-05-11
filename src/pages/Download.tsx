@@ -8,13 +8,20 @@ import {
   FolderSync,
   FileType2,
   Zap,
-  Apple,
   ArrowRight,
   Check,
 } from 'lucide-react';
 import { useSEO } from '../hooks/useSEO';
 import { cn } from '../lib/utils';
 import { getPaddle } from '../lib/paddle';
+
+function AppleLogo({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.09997 22C7.78997 22.05 6.79997 20.68 5.95997 19.47C4.24997 17 2.93997 12.45 4.69997 9.39C5.56997 7.87 7.12997 6.91 8.81997 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/>
+    </svg>
+  );
+}
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -33,8 +40,8 @@ interface Feature {
   icon: React.ReactNode;
   title: string;
   description: string;
-  /** Replace with <img> once you have the real screenshot/demo */
-  imagePlaceholder: string;
+  /** Filename inside /public/images/ — supports .webp, .png, .gif, .mp4 */
+  src?: string;
 }
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -45,7 +52,7 @@ const PLATFORMS: Platform[] = [
   {
     id: 'mac',
     label: 'macOS',
-    icon: <Apple className="w-5 h-5" />,
+    icon: <AppleLogo className="w-5 h-5" />,
     available: true,
     badge: 'Available now',
     priceId: IS_DEV
@@ -87,42 +94,42 @@ const FEATURES: Feature[] = [
     title: 'Batch Processing',
     description:
       'Drop an entire folder and convert hundreds of images in one go. WebPit processes them in parallel using native macOS APIs — no browser tab, no memory limits.',
-    imagePlaceholder: 'batch-processing',
+    src: '/images/batch-processing.mp4',
   },
   {
     icon: <Clipboard className="w-6 h-6" />,
     title: 'Clipboard Conversion',
     description:
       'Copy an image anywhere on your Mac, hit the global shortcut, and get an optimized WebP back in your clipboard instantly. No windows, no friction.',
-    imagePlaceholder: 'clipboard-conversion',
+    src: '/images/clipboard-conversion.mp4',
   },
   {
     icon: <MonitorCheck className="w-6 h-6" />,
     title: 'Menu Bar Agent',
     description:
       'WebPit lives quietly in your menu bar. Drag images onto the icon, check conversion stats, or trigger a batch — all without ever switching apps.',
-    imagePlaceholder: 'menubar-agent',
+    src: '/images/menubar-agent.mp4',
   },
   {
     icon: <FolderSync className="w-6 h-6" />,
     title: 'Watch Folders',
     description:
       'Point WebPit at a folder and it automatically converts every new image that lands there. Perfect for screenshot folders, design exports, or camera imports.',
-    imagePlaceholder: 'watch-folders',
+    src: '/images/watch-folders.mp4',
   },
   {
     icon: <FileType2 className="w-6 h-6" />,
     title: 'Naming Rules',
     description:
       'Define exactly how output files are named using tokens like {name}, {date}, {quality}, and {ext}. Keep your file system organised without renaming anything manually.',
-    imagePlaceholder: 'naming-rules',
+    src: '/images/naming-rules.webp',
   },
   {
     icon: <Zap className="w-6 h-6" />,
     title: 'Native Speed',
     description:
       'Built with Swift and native macOS image frameworks. Conversions are 10–20× faster than browser-based tools and run entirely offline — your images never leave your machine.',
-    imagePlaceholder: 'native-speed',
+    src: '/images/speed.webp',
   },
 ];
 
@@ -139,7 +146,30 @@ const WEB_VS_APP = [
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function ImagePlaceholder({ label }: { label: string }) {
+function ImagePlaceholder({ label, src }: { label: string; src?: string }) {
+  if (src) {
+    const isVideo = src.endsWith('.mp4') || src.endsWith('.webm') || src.endsWith('.mov');
+    if (isVideo) {
+      return (
+        <video
+          src={src}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full rounded-2xl"
+        />
+      );
+    }
+    return (
+      <img
+        src={src}
+        alt={label}
+        className="w-full rounded-2xl"
+      />
+    );
+  }
+
   return (
     <div className="w-full aspect-video rounded-2xl bg-slate-100 border-2 border-dashed border-slate-300 flex flex-col items-center justify-center gap-3 text-slate-400">
       {/* Replace this entire div with your <img> or <video> */}
@@ -150,7 +180,7 @@ function ImagePlaceholder({ label }: { label: string }) {
         </svg>
       </div>
       <p className="text-sm font-medium">{label} screenshot</p>
-      <p className="text-xs opacity-60">Replace with actual image</p>
+      <p className="text-xs opacity-60">Drop file in /public/images/</p>
     </div>
   );
 }
@@ -223,7 +253,8 @@ export default function DownloadPage() {
 
             <p className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed">
               Everything you love about WebPit, plus watch folders, clipboard conversion,
-              a menu bar agent, and native speed — all running offline on your machine.
+              a menu bar agent, and native speed — all running OFFLINE on your machine.
+              No uploads, completely local, images remain 100% private.
             </p>
 
             {/* Platform selector */}
@@ -288,14 +319,7 @@ export default function DownloadPage() {
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 pb-0 -mb-1">
           <div className="w-full aspect-[16/9] rounded-t-3xl bg-slate-800 border border-white/10 border-b-0 flex flex-col items-center justify-center gap-4 text-slate-500 overflow-hidden">
             {/* Replace with hero app screenshot */}
-            <div className="w-16 h-16 rounded-2xl bg-slate-700 flex items-center justify-center">
-              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <p className="text-sm font-medium">Hero app screenshot</p>
-            <p className="text-xs opacity-50">Replace with actual screenshot</p>
+            <img src="/hero.webp" alt="WebPit for Mac" className="w-full h-full object-cover" />
           </div>
         </div>
       </section>
@@ -342,7 +366,7 @@ export default function DownloadPage() {
 
                 {/* Image */}
                 <div className="flex-1 w-full">
-                  <ImagePlaceholder label={feature.title} />
+                  <ImagePlaceholder label={feature.title} src={feature.src} />
                 </div>
               </motion.div>
             );
@@ -422,7 +446,7 @@ export default function DownloadPage() {
               onClick={() => openCheckout(PLATFORMS.find(p => p.id === 'mac')!.priceId)}
               className="inline-flex items-center gap-3 bg-white text-slate-900 font-bold px-8 py-4 rounded-2xl hover:bg-slate-100 transition-all hover:shadow-xl hover:scale-[1.02] text-base w-full sm:w-auto justify-center"
             >
-              <Apple className="w-5 h-5" />
+              <AppleLogo className="w-5 h-5" />
               Download for macOS — $8.99
               <ArrowRight className="w-4 h-4" />
             </button>
