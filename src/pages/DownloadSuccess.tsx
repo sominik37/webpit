@@ -8,7 +8,7 @@ type Status = 'loading' | 'ready' | 'downloading' | 'error';
 
 export default function DownloadSuccess() {
   const [searchParams] = useSearchParams();
-  const transactionId = searchParams.get('_ptxn') || searchParams.get('transaction_id');
+  const transactionId = searchParams.get('transaction_id') || searchParams.get('_ptxn') || searchParams.get('ptxn');
 
   const [status, setStatus] = useState<Status>('loading');
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);

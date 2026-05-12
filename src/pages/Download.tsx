@@ -207,6 +207,19 @@ export default function DownloadPage() {
 
   const openCheckout = useCallback(async (priceId: string) => {
     const paddle = await getPaddle();
+
+    // Listen for checkout completion to capture transaction ID
+    paddle?.Update({
+      eventCallback: (event: any) => {
+        if (event.name === 'checkout.completed') {
+          const txnId = event.data?.transaction_id;
+          if (txnId) {
+            window.location.href = `${window.location.origin}/download/success?transaction_id=${txnId}`;
+          }
+        }
+      },
+    });
+
     paddle?.Checkout.open({
       items: [{ priceId, quantity: 1 }],
       settings: {
