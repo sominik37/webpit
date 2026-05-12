@@ -12,6 +12,8 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1045.0",
+    "@aws-sdk/s3-request-presigner": "^3.1045.0",
     "@google/genai": "^1.29.0",
     "@paddle/paddle-js": "^1.6.4",
     "@portabletext/react": "^6.0.3",
@@ -37,6 +39,7 @@
     "@types/express": "^4.17.21",
     "@types/node": "^22.14.0",
     "@types/react-syntax-highlighter": "^15.5.13",
+    "@vercel/node": "^5.8.0",
     "autoprefixer": "^10.4.21",
     "better-sqlite3": "^12.4.1",
     "express": "^4.21.2",
