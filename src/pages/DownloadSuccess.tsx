@@ -20,6 +20,17 @@ export default function DownloadSuccess() {
   });
 
   useEffect(() => {
+    // First check if we already have the URL from sessionStorage (set during checkout)
+    const cachedUrl = sessionStorage.getItem('webpit_download_url');
+    if (cachedUrl) {
+      sessionStorage.removeItem('webpit_download_url');
+      setDownloadUrl(cachedUrl);
+      setStatus('ready');
+      triggerDownload(cachedUrl);
+      return;
+    }
+
+    // Fallback: fetch via transaction ID from URL
     if (!transactionId) {
       setErrorMsg('No transaction ID found. Please check your email for the download link.');
       setStatus('error');
@@ -32,7 +43,6 @@ export default function DownloadSuccess() {
         if (data.url) {
           setDownloadUrl(data.url);
           setStatus('ready');
-          // Auto-trigger download
           triggerDownload(data.url);
         } else {
           setErrorMsg(data.error || 'Could not generate download link.');

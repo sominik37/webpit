@@ -206,7 +206,18 @@ export default function DownloadPage() {
   const selected = PLATFORMS.find(p => p.id === activePlatform)!;
 
   const openCheckout = useCallback(async (priceId: string) => {
-    const paddle = await getPaddle((transactionId) => {
+    const paddle = await getPaddle(async (transactionId) => {
+      // Fetch the signed download URL immediately after payment
+      try {
+        const res = await fetch(`/api/download?transaction_id=${transactionId}`);
+        const data = await res.json();
+        if (data.url) {
+          // Store in sessionStorage so success page can pick it up
+          sessionStorage.setItem('webpit_download_url', data.url);
+        }
+      } catch {
+        // Silently fail — success page has fallback
+      }
       window.location.href = `${window.location.origin}/download/success?transaction_id=${transactionId}`;
     });
 
