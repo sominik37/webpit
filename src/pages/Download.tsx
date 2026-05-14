@@ -206,18 +206,8 @@ export default function DownloadPage() {
   const selected = PLATFORMS.find(p => p.id === activePlatform)!;
 
   const openCheckout = useCallback(async (priceId: string) => {
-    const paddle = await getPaddle();
-
-    // Listen for checkout completion to capture transaction ID
-    paddle?.Update({
-      eventCallback: (event: any) => {
-        if (event.name === 'checkout.completed') {
-          const txnId = event.data?.transaction_id;
-          if (txnId) {
-            window.location.href = `${window.location.origin}/download/success?transaction_id=${txnId}`;
-          }
-        }
-      },
+    const paddle = await getPaddle((transactionId) => {
+      window.location.href = `${window.location.origin}/download/success?transaction_id=${transactionId}`;
     });
 
     paddle?.Checkout.open({

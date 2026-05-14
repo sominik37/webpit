@@ -11,7 +11,7 @@ const R2 = new S3Client({
   },
 });
 
-async function verifyPaddleTransaction(transactionId: string): Promise<boolean> {
+async function verifyPaddleTransaction(transactionId: string): Promise<{ valid: boolean; debug: any }> {
   try {
     const res = await fetch(
       `https://api.paddle.com/transactions/${transactionId}`,
@@ -23,15 +23,21 @@ async function verifyPaddleTransaction(transactionId: string): Promise<boolean> 
       }
     );
 
-    if (!res.ok) return false;
-
     const data = await res.json();
     const status = data?.data?.status;
 
-    // Only allow completed/paid transactions
-    return status === 'completed' || status === 'billed';
-  } catch {
-    return false;
+    return {
+      valid: res.ok && (status === 'completed' || status === 'billed'),
+      debug: {
+        httpStatus: res.status,
+        paddleStatus: status,
+        hasApiKey: !!process.env.PADDLE_API_KEY,
+        apiKeyPrefix: process.env.PADDLE_API_KEY?.substring(0, 8),
+        error: data?.error,
+      }
+    };
+  } catch (e: any) {
+    return { valid: false, debug: { exception: e.message } };
   }
 }
 
@@ -48,10 +54,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // Verify the transaction is real and paid
-  const isValid = await verifyPaddleTransaction(transaction_id);
+  const { valid, debug } = await verifyPaddleTransaction(transaction_id);
 
-  if (!isValid) {
-    return res.status(403).json({ error: 'Invalid or unpaid transaction' });
+  if (!valid) {
+    return res.status(403).json({ error: 'Invalid or unpaid transaction', debug });
   }
 
   // Generate a pre-signed URL that expires in 10 minutes
