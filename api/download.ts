@@ -12,33 +12,55 @@ const R2 = new S3Client({
 });
 
 async function verifyPaddleTransaction(transactionId: string): Promise<{ valid: boolean; debug: any }> {
-  try {
-    const res = await fetch(
-      `https://api.paddle.com/transactions/${transactionId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.PADDLE_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+  // Retry up to 3 times with delay — card payments may still be processing
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const res = await fetch(
+        `https://api.paddle.com/transactions/${transactionId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.PADDLE_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-    const data = await res.json();
-    const status = data?.data?.status;
+      const data = await res.json();
+      const status = data?.data?.status;
 
-    return {
-      valid: res.ok && (status === 'completed' || status === 'billed'),
-      debug: {
-        httpStatus: res.status,
-        paddleStatus: status,
-        hasApiKey: !!process.env.PADDLE_API_KEY,
-        apiKeyPrefix: process.env.PADDLE_API_KEY?.substring(0, 8),
-        error: data?.error,
+      // Accept completed, billed, or paid statuses
+      const validStatuses = ['completed', 'billed', 'paid'];
+      const isValid = res.ok && validStatuses.includes(status);
+
+      if (isValid) {
+        return { valid: true, debug: { httpStatus: res.status, paddleStatus: status, attempt } };
       }
-    };
-  } catch (e: any) {
-    return { valid: false, debug: { exception: e.message } };
+
+      // If status is 'ready' or 'draft', payment may still be processing — wait and retry
+      if (attempt < 3 && (status === 'ready' || status === 'draft' || !res.ok)) {
+        await new Promise(r => setTimeout(r, 2000 * attempt));
+        continue;
+      }
+
+      return {
+        valid: false,
+        debug: {
+          httpStatus: res.status,
+          paddleStatus: status,
+          hasApiKey: !!process.env.PADDLE_API_KEY,
+          apiKeyPrefix: process.env.PADDLE_API_KEY?.substring(0, 8),
+          error: data?.error,
+          attempt,
+        }
+      };
+    } catch (e: any) {
+      if (attempt === 3) {
+        return { valid: false, debug: { exception: e.message, attempt } };
+      }
+      await new Promise(r => setTimeout(r, 2000 * attempt));
+    }
   }
+  return { valid: false, debug: { error: 'Max retries exceeded' } };
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

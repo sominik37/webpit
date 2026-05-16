@@ -8,7 +8,10 @@ type Status = 'loading' | 'ready' | 'downloading' | 'error';
 
 export default function DownloadSuccess() {
   const [searchParams] = useSearchParams();
-  const transactionId = searchParams.get('transaction_id') || searchParams.get('_ptxn') || searchParams.get('ptxn');
+  const transactionId = searchParams.get('transaction_id') 
+    || searchParams.get('_ptxn') 
+    || searchParams.get('ptxn')
+    || searchParams.get('paddle_transaction_id');
 
   const [status, setStatus] = useState<Status>('loading');
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
@@ -37,22 +40,33 @@ export default function DownloadSuccess() {
       return;
     }
 
-    fetch(`/api/download?transaction_id=${transactionId}`)
-      .then(res => res.json())
-      .then(data => {
+    // Retry up to 3 times — card payments may take a moment to process
+    const attemptFetch = async (retries: number): Promise<void> => {
+      try {
+        const res = await fetch(`/api/download?transaction_id=${transactionId}`);
+        const data = await res.json();
         if (data.url) {
           setDownloadUrl(data.url);
           setStatus('ready');
           triggerDownload(data.url);
+        } else if (retries > 0) {
+          await new Promise(r => setTimeout(r, 3000));
+          return attemptFetch(retries - 1);
         } else {
           setErrorMsg(data.error || 'Could not generate download link.');
           setStatus('error');
         }
-      })
-      .catch(() => {
+      } catch {
+        if (retries > 0) {
+          await new Promise(r => setTimeout(r, 3000));
+          return attemptFetch(retries - 1);
+        }
         setErrorMsg('Something went wrong. Please contact support.');
         setStatus('error');
-      });
+      }
+    };
+
+    attemptFetch(3);
   }, [transactionId]);
 
   function triggerDownload(url: string) {
@@ -92,9 +106,9 @@ export default function DownloadSuccess() {
         {status === 'loading' && (
           <>
             <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 mb-4">
-              Verifying your purchase...
+              Preparing your download...
             </h1>
-            <p className="text-lg text-slate-500">Just a moment while we prepare your download.</p>
+            <p className="text-lg text-slate-500">Verifying your payment, this may take a few seconds.</p>
           </>
         )}
 

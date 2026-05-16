@@ -212,7 +212,6 @@ export default function DownloadPage() {
         const res = await fetch(`/api/download?transaction_id=${transactionId}`);
         const data = await res.json();
         if (data.url) {
-          // Store in sessionStorage so success page can pick it up
           sessionStorage.setItem('webpit_download_url', data.url);
         }
       } catch {
@@ -223,9 +222,7 @@ export default function DownloadPage() {
 
     paddle?.Checkout.open({
       items: [{ priceId, quantity: 1 }],
-      settings: {
-        successUrl: `${window.location.origin}/download/success`,
-      },
+      // No successUrl — let eventCallback handle the redirect for all payment types
     });
   }, []);;
 
