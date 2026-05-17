@@ -57,31 +57,31 @@ const PLATFORMS: Platform[] = [
     version: '1.0.2',
     requirement: 'macOS 26 Tahoe or later · Apple Silicon',
   },
-  {
-    id: 'windows',
-    label: 'Windows',
-    icon: (
-      // Simple Windows logo using SVG paths
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M3 5.557L10.5 4.5v7H3V5.557zM11.5 4.357L21 3v8.5h-9.5V4.357zM3 12.5h7.5V19.5L3 18.443V12.5zM11.5 12.5H21V21l-9.5-1.357V12.5z" />
-      </svg>
-    ),
-    available: false,
-    badge: 'Coming soon',
-    priceId: '',
-  },
-  {
-    id: 'linux',
-    label: 'Linux',
-    icon: (
-      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" />
-      </svg>
-    ),
-    available: false,
-    badge: 'Coming soon',
-    priceId: '',
-  },
+  // {
+  //   id: 'windows',
+  //   label: 'Windows',
+  //   icon: (
+  //     // Simple Windows logo using SVG paths
+  //     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+  //       <path d="M3 5.557L10.5 4.5v7H3V5.557zM11.5 4.357L21 3v8.5h-9.5V4.357zM3 12.5h7.5V19.5L3 18.443V12.5zM11.5 12.5H21V21l-9.5-1.357V12.5z" />
+  //     </svg>
+  //   ),
+  //   available: false,
+  //   badge: 'Coming soon',
+  //   priceId: '',
+  // },
+  // {
+  //   id: 'linux',
+  //   label: 'Linux',
+  //   icon: (
+  //     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+  //       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" />
+  //     </svg>
+  //   ),
+  //   available: false,
+  //   badge: 'Coming soon',
+  //   priceId: '',
+  // },
 ];
 
 const FEATURES: Feature[] = [
@@ -299,7 +299,7 @@ export default function DownloadPage() {
               {selected.available ? (
                 <button
                   onClick={() => openCheckout(selected.priceId)}
-                  className="inline-flex items-center gap-3 bg-white text-slate-900 font-bold px-8 py-4 rounded-2xl hover:bg-slate-100 transition-all hover:shadow-xl hover:scale-[1.02] text-base"
+                  className="inline-flex items-center gap-3 bg-white text-slate-900 font-bold px-8 py-4 rounded-2xl hover:bg-slate-100 transition-all hover:shadow-xl hover:scale-[1.02] text-base cursor-pointer"
                 >
                   <Download className="w-5 h-5" />
                   Download for {selected.label} — $8.99
@@ -451,7 +451,7 @@ export default function DownloadPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
               onClick={() => openCheckout(PLATFORMS.find(p => p.id === 'mac')!.priceId)}
-              className="inline-flex items-center gap-3 bg-white text-slate-900 font-bold px-8 py-4 rounded-2xl hover:bg-slate-100 transition-all hover:shadow-xl hover:scale-[1.02] text-base w-full sm:w-auto justify-center"
+              className="inline-flex items-center gap-3 bg-white text-slate-900 font-bold px-8 py-4 rounded-2xl hover:bg-slate-100 transition-all hover:shadow-xl hover:scale-[1.02] text-base w-full sm:w-auto justify-center cursor-pointer"
             >
               <AppleLogo className="w-5 h-5" />
               Download for macOS — $8.99
