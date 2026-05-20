@@ -11,6 +11,7 @@ const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Download = lazy(() => import('./pages/Download'));
 const DownloadSuccess = lazy(() => import('./pages/DownloadSuccess'));
+const Redownload = lazy(() => import('./pages/Redownload'));
 const Refund = lazy(() => import('./pages/Refund'));
 
 // Simple loading fallback
@@ -91,6 +92,7 @@ export default function App() {
             <Route path="/terms" element={<Terms />} />
             <Route path="/download" element={<Download />} />
             <Route path="/download/success" element={<DownloadSuccess />} />
+            <Route path="/download/redownload" element={<Redownload />} />
             <Route path="/refund" element={<Refund />} />
           </Routes>
         </Suspense>

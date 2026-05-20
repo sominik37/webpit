@@ -130,7 +130,7 @@ const FEATURES: Feature[] = [
 ];
 
 const WEB_VS_APP = [
-  { feature: 'Batch processing', web: 'Limited', app: true },
+  { feature: 'Batch processing', web: '20 files/day', app: true },
   { feature: 'Watch folders', web: false, app: true },
   { feature: 'Menu bar access', web: false, app: true },
   { feature: 'Clipboard conversion', web: false, app: true },
@@ -468,6 +468,12 @@ export default function DownloadPage() {
             Not satisfied?{' '}
             <a href="/refund" className="underline hover:text-slate-400 transition-colors">
               14-day money-back guarantee.
+            </a>
+          </p>
+          <p className="text-slate-600 text-sm mt-2">
+            Already purchased?{' '}
+            <a href="/download/redownload" className="underline hover:text-slate-400 transition-colors">
+              Re-download your copy.
             </a>
           </p>
         </div>

@@ -4,9 +4,11 @@ import { Dropzone } from '../components/Dropzone';
 import { ImageCard, type ProcessedImage } from '../components/ImageCard';
 import { Slider } from '../components/ui/slider';
 import { Button } from '../components/ui/button';
+import { MacAppPromoModal } from '../components/MacAppPromoModal';
 import { Download, Trash2, Settings2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { formatBytes } from '../lib/utils';
+import { useFileLimit } from '../hooks/useFileLimit';
 
 import { useSEO } from '../hooks/useSEO';
 
@@ -21,46 +23,48 @@ export default function Home({ type = 'default' }: { type?: string }) {
   const [images, setImages] = useState<ProcessedImage[]>([]);
   const [quality, setQuality] = useState(80);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showLimitModal, setShowLimitModal] = useState(false);
+  const { filesUsedToday, remaining, canProcess, limit, consume } = useFileLimit();
 
   const seoData = {
     default: {
       title: "WebPit | Fast, Private & Free WebP Image Converter",
-      description: "Convert JPG and PNG to WebP instantly. 100% client-side processing means your images never leave your browser. No signups, no limits, just speed.",
+      description: "Convert JPG and PNG to WebP instantly. 100% client-side processing means your images never leave your browser. Free for up to 20 files/day — no signups.",
       heading: "How to Convert and Compress Your Images",
       contentDesc: "Using WebPit is as easy as \"Drag, Slide, and Save.\" You don’t need to be a tech expert to get professional results.",
       uploadDesc: "Drag and drop your JPG, PNG, or GIF files directly into the box above. You can even upload multiple images at once!"
     },
     png: {
       title: "Convert PNG to WebP Free | Maintain Transparency",
-      description: "Fastest way to convert PNG to WebP with transparent backgrounds. Shrink file sizes up to 80% with no loss in visual quality. 100% free and private.",
+      description: "Fastest way to convert PNG to WebP with transparent backgrounds. Shrink file sizes up to 80% with no loss in visual quality. Free for up to 20 files/day.",
       heading: "Easily Convert PNG to WebP in Seconds",
       contentDesc: "Looking to save space while keeping transparent backgrounds? WebPit converts your transparent PNGs to much smaller WebP files instantly.",
       uploadDesc: "Drag and drop your PNG files directly into the box above. WebPit preserves alpha transparency perfectly."
     },
     jpg: {
       title: "Convert JPG to WebP Free | Shrink Image Sizes Instantly",
-      description: "Convert your heavy JPG images to fast-loading WebP format. Improve your website speed and SEO rankings today without slow servers.",
+      description: "Convert your heavy JPG images to fast-loading WebP format. Improve your website speed and SEO rankings today. Free for up to 20 files/day.",
       heading: "Convert JPG to WebP for Faster Load Times",
       contentDesc: "WebPit takes your heavy JPG files and shrinks them to WebP format, offering immense file size savings while maintaining crisp details.",
       uploadDesc: "Drag and drop your JPG images directly into the box above to start saving space instantly."
     },
     jpeg: {
       title: "Convert JPEG to WebP Free | Optimize for Web",
-      description: "Optimize JPEG photos to WebP exactly in your browser. Dramatically reduce file size for your website without losing perceptible quality.",
+      description: "Optimize JPEG photos to WebP exactly in your browser. Dramatically reduce file size for your website without losing perceptible quality. Free for up to 20 files/day.",
       heading: "Shrink JPEG to WebP Images Quickly",
       contentDesc: "Fast websites rank higher on Google. Convert your JPEGs to the modern WebP format securely in your browser to boost performance.",
       uploadDesc: "Drag and drop your JPEG photos directly into the box above."
     },
     gif: {
       title: "Convert GIF to Static WebP | Compress Heavy Frames",
-      description: "Turn heavy GIFs into optimized WebP formats in seconds. Fully private browser-based conversion. Save bandwidth today.",
+      description: "Turn heavy GIFs into optimized WebP formats in seconds. Fully private browser-based conversion. Free for up to 20 files/day.",
       heading: "Optimize GIF to WebP Quickly",
       contentDesc: "Turn those bulky GIFs into highly optimized WebP files instantly for much better loading performance.",
       uploadDesc: "Drag and drop your GIF files directly into the box above."
     },
     compress: {
       title: "Compress WebP Images | Advanced WebP Optimizer",
-      description: "Compress and optimize your existing WebP images even further. Fine-tune image quality for the absolute best performance on the web.",
+      description: "Compress and optimize your existing WebP images even further. Fine-tune image quality for the absolute best performance on the web. Free for up to 20 files/day.",
       heading: "Compress WebP for Ultimate Performance",
       contentDesc: "Need to squeeze every last byte out of your images? Use our advanced sliders to compress standard image files or existing WebP formats without quality loss.",
       uploadDesc: "Drag and drop your images to compress them directly in your browser."
@@ -132,7 +136,24 @@ export default function Home({ type = 'default' }: { type?: string }) {
   };
 
   const handleFilesDrop = useCallback((files: File[]) => {
-    const newImages: ProcessedImage[] = files.map(file => ({
+    // Check if already at the limit before accepting any files
+    if (!canProcess) {
+      setShowLimitModal(true);
+      return;
+    }
+
+    // Consume slots — may be fewer than files.length if near the limit
+    const allowed = consume(files.length);
+
+    if (allowed < files.length) {
+      // Some files were rejected — show the modal after processing the allowed ones
+      setShowLimitModal(true);
+    }
+
+    const acceptedFiles = files.slice(0, allowed);
+    if (acceptedFiles.length === 0) return;
+
+    const newImages: ProcessedImage[] = acceptedFiles.map(file => ({
       id: Math.random().toString(36).substring(7),
       originalFile: file,
       previewUrl: URL.createObjectURL(file),
@@ -166,7 +187,7 @@ export default function Home({ type = 'default' }: { type?: string }) {
         );
       }, 100);
     });
-  }, [quality]);
+  }, [quality, canProcess, consume]);
 
   const handleRemove = (id: string) => {
     setImages(prev => {
@@ -272,6 +293,8 @@ export default function Home({ type = 'default' }: { type?: string }) {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+      {/* Daily limit modal */}
+      <MacAppPromoModal open={showLimitModal} onClose={() => setShowLimitModal(false)} />
       {/* Controls & Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Settings Card */}
@@ -320,6 +343,12 @@ export default function Home({ type = 'default' }: { type?: string }) {
               <span>Optimized</span>
               <span className="font-mono text-green-400">{formatBytes(totalProcessedSize)}</span>
             </div>
+            <div className="flex justify-between text-sm border-t border-slate-800 pt-2">
+              <span className="text-slate-400">Daily files</span>
+              <span className={`font-mono font-medium ${remaining <= 5 ? 'text-amber-400' : 'text-slate-300'}`}>
+                {filesUsedToday} / {limit}
+              </span>
+            </div>
           </div>
           {/* Subtle background glow effect using pure CSS */}
           <div className="absolute top-0 right-0 -mr-16 -mt-16 w-48 h-48 bg-blue-500 opacity-20 blur-3xl rounded-full"></div>
@@ -341,8 +370,8 @@ export default function Home({ type = 'default' }: { type?: string }) {
             </svg>
           </div>
           <div>
-            <p className="text-sm font-semibold">Want more power? Try WebPit for Mac</p>
-            <p className="text-xs text-slate-400 mt-0.5">Watch folders · Menu bar · Clipboard conversion · Native speed</p>
+            <p className="text-sm font-semibold">Need more than 20 files/day? Try WebPit for Mac</p>
+            <p className="text-xs text-slate-400 mt-0.5">Unlimited conversions · Watch folders · Menu bar · Clipboard · Native speed</p>
           </div>
         </div>
         <div className="shrink-0 flex items-center gap-1 text-slate-400 group-hover:text-white transition-colors text-sm font-medium">
@@ -551,8 +580,8 @@ export default function Home({ type = 'default' }: { type?: string }) {
                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7"></path></svg>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-lg text-slate-100">100% Free & Private</h4>
-                  <p className="text-slate-400 text-sm mt-1 leading-relaxed">Your images are processed right in your browser. We don't store your photos on our servers.</p>
+                  <h4 className="font-semibold text-lg text-slate-100">Free — Up to 20 Files/Day</h4>
+                  <p className="text-slate-400 text-sm mt-1 leading-relaxed">Your images are processed right in your browser — no uploads, no servers. Need more? The <Link to="/download" className="text-blue-400 hover:text-blue-300 underline underline-offset-2">Mac app</Link> gives you unlimited conversions.</p>
                 </div>
               </div>
             </div>

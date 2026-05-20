@@ -190,6 +190,10 @@ export default function DownloadSuccess() {
             Back to Desktop App
           </Link>
           <span className="hidden sm:block text-slate-300">·</span>
+          <Link to="/download/redownload" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
+            Re-download later
+          </Link>
+          <span className="hidden sm:block text-slate-300">·</span>
           <Link to="/" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
             Use the web tool
           </Link>
