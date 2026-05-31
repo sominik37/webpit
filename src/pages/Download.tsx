@@ -246,10 +246,10 @@ export default function DownloadPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-semibold mb-8">
+            {/* <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-semibold mb-8">
               <Zap className="w-3.5 h-3.5" />
               Native Desktop App
-            </span>
+            </span> */}
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
               WebPit, now on your{' '}
@@ -265,7 +265,7 @@ export default function DownloadPage() {
             </p>
 
             {/* Platform selector */}
-            <div className="inline-flex items-center gap-2 p-1.5 bg-white/5 border border-white/10 rounded-2xl mb-10">
+            {/* <div className="inline-flex items-center gap-1 sm:gap-2 p-1 sm:p-1.5 bg-white/5 border border-white/10 rounded-2xl mb-10 max-w-full overflow-x-auto">
               {PLATFORMS.map(p => (
                 <button
                   key={p.id}
@@ -291,7 +291,7 @@ export default function DownloadPage() {
                   )}
                 </button>
               ))}
-            </div>
+            </div> */}
 
             {/* CTA */}
             <div className="flex flex-col items-center gap-3">
@@ -299,7 +299,7 @@ export default function DownloadPage() {
               {selected.available ? (
                 <button
                   onClick={() => openCheckout(selected.priceId)}
-                  className="inline-flex items-center gap-3 bg-white text-slate-900 font-bold px-8 py-4 rounded-2xl hover:bg-slate-100 transition-all hover:shadow-xl hover:scale-[1.02] text-base cursor-pointer"
+                  className="inline-flex items-center justify-center gap-3 bg-white text-slate-900 font-bold px-8 py-4 rounded-2xl hover:bg-slate-100 transition-all hover:shadow-xl hover:scale-[1.02] text-base cursor-pointer w-full sm:w-auto"
                 >
                   <Download className="w-5 h-5" />
                   Download for {selected.label} — $8.99
@@ -308,7 +308,7 @@ export default function DownloadPage() {
               ) : (
                 <button
                   disabled
-                  className="inline-flex items-center gap-3 bg-white/10 text-slate-400 font-bold px-8 py-4 rounded-2xl cursor-not-allowed text-base border border-white/10"
+                  className="inline-flex items-center justify-center gap-3 bg-white/10 text-slate-400 font-bold px-8 py-4 rounded-2xl cursor-not-allowed text-base border border-white/10 w-full sm:w-auto"
                 >
                   <Download className="w-5 h-5" />
                   {selected.label} — Coming Soon
@@ -343,7 +343,7 @@ export default function DownloadPage() {
           </p>
         </div>
 
-        <div className="space-y-24">
+        <div className="space-y-16 sm:space-y-24">
           {FEATURES.map((feature, i) => {
             const isEven = i % 2 === 0;
             return (
@@ -393,8 +393,8 @@ export default function DownloadPage() {
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-3xl border border-slate-200 shadow-sm">
-            <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto rounded-3xl border border-slate-200 shadow-sm">
+            <table className="w-full text-left border-collapse min-w-[400px]">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200">
                   <th className="p-5 text-sm font-semibold text-slate-600 w-1/2">Feature</th>
@@ -433,6 +433,80 @@ export default function DownloadPage() {
               </tbody>
             </table>
           </div>
+        </div>
+      </section>
+
+      {/* ── Installation Guide ── */}
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 py-24">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 mb-4">
+            How to install WebPit
+          </h2>
+          <p className="text-slate-500 text-lg">
+            macOS will warn you the first time you open a new app. Here's how to get past it in seconds.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          {/* Step 1 */}
+          <div className="flex gap-5 bg-white rounded-3xl border border-slate-200/60 shadow-sm p-6 sm:p-8">
+            <div className="shrink-0 w-9 h-9 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-bold text-sm">1</div>
+            <div className="space-y-1">
+              <p className="font-semibold text-slate-900">Open the .dmg file</p>
+              <p className="text-sm text-slate-500 leading-relaxed">
+                Find <span className="font-mono bg-slate-100 px-1.5 py-0.5 rounded text-xs">WebPit.dmg</span> in your Downloads folder and double-click it. Drag the WebPit icon into your Applications folder, then eject the disk image.
+              </p>
+            </div>
+          </div>
+
+          {/* Step 2 */}
+          <div className="flex gap-5 bg-white rounded-3xl border border-slate-200/60 shadow-sm p-6 sm:p-8">
+            <div className="shrink-0 w-9 h-9 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-bold text-sm">2</div>
+            <div className="space-y-1">
+              <p className="font-semibold text-slate-900">Try to open WebPit</p>
+              <p className="text-sm text-slate-500 leading-relaxed">
+                Double-click WebPit in Applications. macOS Gatekeeper will block it with a message like <span className="italic">"WebPit cannot be opened because it is from an unidentified developer."</span> This is normal — click <span className="font-semibold text-slate-700">OK</span> to dismiss the dialog.
+              </p>
+            </div>
+          </div>
+
+          {/* Step 3 — primary method */}
+          <div className="flex gap-5 bg-blue-50 rounded-3xl border border-blue-100 shadow-sm p-6 sm:p-8">
+            <div className="shrink-0 w-9 h-9 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold text-sm">3</div>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <p className="font-semibold text-slate-900">Right-click → Open</p>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-600 text-white uppercase tracking-wide">Easiest</span>
+              </div>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                In your Applications folder, <span className="font-semibold text-slate-800">right-click</span> (or <span className="font-semibold text-slate-800">Control-click</span>) the WebPit icon and choose <span className="font-semibold text-slate-800">Open</span> from the menu. A new dialog will appear — this time it includes an <span className="font-semibold text-slate-800">Open</span> button. Click it and WebPit will launch. macOS remembers your choice, so you only need to do this once.
+              </p>
+            </div>
+          </div>
+
+          {/* Step 4 — alternative method */}
+          <div className="flex gap-5 bg-white rounded-3xl border border-slate-200/60 shadow-sm p-6 sm:p-8">
+            <div className="shrink-0 w-9 h-9 rounded-2xl bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm">4</div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <p className="font-semibold text-slate-900">Alternative: System Settings</p>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-600 uppercase tracking-wide">Also works</span>
+              </div>
+              <p className="text-sm text-slate-500 leading-relaxed">
+                If the right-click method doesn't work, open <span className="font-semibold text-slate-700">System Settings → Privacy &amp; Security</span>. Scroll down and you'll see a message saying WebPit was blocked. Click <span className="font-semibold text-slate-700">Open Anyway</span>, then confirm with your password or Touch ID.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Why this happens callout */}
+        <div className="mt-8 flex gap-4 bg-amber-50 border border-amber-100 rounded-2xl p-5">
+          <svg className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p className="text-sm text-amber-800 leading-relaxed">
+            <span className="font-semibold">Why does this happen?</span> Apple's Gatekeeper checks apps against its notarization database. WebPit is safe — this warning appears because the app hasn't been submitted to Apple's notarization service yet. The right-click method lets you override this check for apps you trust.
+          </p>
         </div>
       </section>
 

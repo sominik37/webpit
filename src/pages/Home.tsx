@@ -298,7 +298,7 @@ export default function Home({ type = 'default' }: { type?: string }) {
       {/* Controls & Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Settings Card */}
-        <div className="md:col-span-2 bg-white rounded-3xl p-8 shadow-[0_2px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-200/60 transition-all hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.08)]">
+        <div className="md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 shadow-[0_2px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-200/60 transition-all hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.08)]">
           <div className="flex items-center gap-2 mb-6">
             <Settings2 className="w-5 h-5 text-blue-600" />
             <h2 className="font-semibold text-slate-900">Optimization Settings</h2>
@@ -324,7 +324,7 @@ export default function Home({ type = 'default' }: { type?: string }) {
         </div>
 
         {/* Stats Card */}
-        <div className="bg-slate-950 text-white rounded-3xl p-8 shadow-xl flex flex-col justify-between relative overflow-hidden">
+        <div className="bg-slate-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col justify-between relative overflow-hidden">
           <div className="relative z-10">
             <h2 className="font-medium text-slate-300">Total Savings</h2>
             <div className="mt-2 flex items-baseline gap-2">
@@ -361,7 +361,7 @@ export default function Home({ type = 'default' }: { type?: string }) {
       {/* Desktop App Promo */}
       <Link
         to="/download"
-        className="group flex items-center justify-between gap-4 bg-slate-900 text-white rounded-2xl px-6 py-4 hover:bg-slate-800 transition-all hover:shadow-lg"
+        className="group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900 text-white rounded-2xl px-6 py-4 hover:bg-slate-800 transition-all hover:shadow-lg"
       >
         <div className="flex items-center gap-4">
           <div className="shrink-0 w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center">
@@ -374,7 +374,7 @@ export default function Home({ type = 'default' }: { type?: string }) {
             <p className="text-xs text-slate-400 mt-0.5">Unlimited conversions · Watch folders · Menu bar · Clipboard · Native speed</p>
           </div>
         </div>
-        <div className="shrink-0 flex items-center gap-1 text-slate-400 group-hover:text-white transition-colors text-sm font-medium">
+        <div className="shrink-0 flex items-center gap-1 text-slate-400 group-hover:text-white transition-colors text-sm font-medium ml-13 sm:ml-0">
           Download Now
           <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -384,7 +384,7 @@ export default function Home({ type = 'default' }: { type?: string }) {
 
       {/* Image List */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <h3 className="font-semibold text-slate-900 text-lg">
             Processed Images ({images.length})
           </h3>
@@ -471,8 +471,8 @@ export default function Home({ type = 'default' }: { type?: string }) {
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-3xl border border-slate-200 shadow-sm bg-white">
-            <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto rounded-3xl border border-slate-200 shadow-sm bg-white">
+            <table className="w-full text-left border-collapse min-w-[480px]">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200/60">
                   <th className="p-5 font-semibold text-sm text-slate-700">Feature</th>
@@ -484,33 +484,41 @@ export default function Home({ type = 'default' }: { type?: string }) {
                 <tr className="hover:bg-slate-50/50 transition-colors">
                   <td className="p-5 text-sm font-medium text-slate-800">Size</td>
                   <td className="p-5 text-sm text-slate-500">Large and bulky.</td>
-                  <td className="p-5 text-sm font-medium text-emerald-600 flex items-center gap-2">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                    30% smaller on average.
+                  <td className="p-5 text-sm font-medium text-emerald-600">
+                    <span className="inline-flex items-center gap-2">
+                      <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                      30% smaller on average.
+                    </span>
                   </td>
                 </tr>
                 <tr className="hover:bg-slate-50/50 transition-colors">
                   <td className="p-5 text-sm font-medium text-slate-800">Speed</td>
                   <td className="p-5 text-sm text-slate-500">Slows down your website.</td>
-                  <td className="p-5 text-sm font-medium text-emerald-600 flex items-center gap-2">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                    Loads much faster.
+                  <td className="p-5 text-sm font-medium text-emerald-600">
+                    <span className="inline-flex items-center gap-2">
+                      <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                      Loads much faster.
+                    </span>
                   </td>
                 </tr>
                 <tr className="hover:bg-slate-50/50 transition-colors">
                   <td className="p-5 text-sm font-medium text-slate-800">Quality</td>
                   <td className="p-5 text-sm text-slate-500">Loses detail when shrunk.</td>
-                  <td className="p-5 text-sm font-medium text-emerald-600 flex items-center gap-2">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                    Stays crisp even at small sizes.
+                  <td className="p-5 text-sm font-medium text-emerald-600">
+                    <span className="inline-flex items-center gap-2">
+                      <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                      Stays crisp even at small sizes.
+                    </span>
                   </td>
                 </tr>
                 <tr className="hover:bg-slate-50/50 transition-colors">
                   <td className="p-5 text-sm font-medium text-slate-800">Transparency</td>
                   <td className="p-5 text-sm text-slate-500">Only PNGs can have clear backgrounds.</td>
-                  <td className="p-5 text-sm font-medium text-emerald-600 flex items-center gap-2">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                    Supports clear backgrounds with tiny file sizes.
+                  <td className="p-5 text-sm font-medium text-emerald-600">
+                    <span className="inline-flex items-center gap-2">
+                      <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                      Supports clear backgrounds with tiny file sizes.
+                    </span>
                   </td>
                 </tr>
               </tbody>
@@ -542,7 +550,7 @@ export default function Home({ type = 'default' }: { type?: string }) {
         </section>
 
         {/* Benefits Section */}
-        <section className="bg-slate-950 text-white rounded-[2.5rem] p-12 mb-8 space-y-10 relative overflow-hidden shadow-2xl">
+        <section className="bg-slate-950 text-white rounded-[2.5rem] p-8 sm:p-12 mb-8 space-y-10 relative overflow-hidden shadow-2xl">
           <div className="absolute top-0 right-0 -mr-32 -mt-32 w-96 h-96 bg-blue-500 opacity-10 blur-3xl rounded-full"></div>
           <div className="relative z-10 w-full">
              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-2">The Benefits of Using WebPit for Your Website</h2>

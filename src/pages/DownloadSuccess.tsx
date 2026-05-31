@@ -124,7 +124,7 @@ export default function DownloadSuccess() {
             {/* Social share */}
             <div className="mb-8">
               <p className="text-sm font-medium text-slate-500 mb-3">Enjoying WebPit? Spread the word</p>
-              <div className="flex items-center justify-center gap-3">
+              <div className="flex flex-wrap items-center justify-center gap-3">
                 {/* X / Twitter */}
                 <a
                   href="https://x.com/intent/tweet?text=Just%20picked%20up%20WebPit%20for%20Mac%20%E2%80%94%20native%20WebP%20converter%20with%20watch%20folders%2C%20clipboard%20conversion%20and%20menu%20bar%20access.%20Super%20fast%20%F0%9F%9A%80&url=https%3A%2F%2Fwebpit.site%2Fdownload"
@@ -181,27 +181,34 @@ export default function DownloadSuccess() {
             {/* Steps */}
             <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-8 mb-8 text-left space-y-6">
               <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
-                Next steps
+                Installation steps
               </h2>
               <div className="flex items-start gap-4">
                 <div className="shrink-0 w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-sm">1</div>
                 <div>
                   <p className="font-semibold text-slate-900">Open the .dmg file</p>
-                  <p className="text-sm text-slate-500 mt-0.5">Find WebPit.dmg in your Downloads folder and open it.</p>
+                  <p className="text-sm text-slate-500 mt-0.5">Find <span className="font-mono bg-slate-100 px-1 rounded text-xs">WebPit.dmg</span> in your Downloads folder, open it, and drag WebPit to your Applications folder.</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <div className="shrink-0 w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-sm">2</div>
                 <div>
-                  <p className="font-semibold text-slate-900">Drag to Applications</p>
-                  <p className="text-sm text-slate-500 mt-0.5">Drag WebPit to your Applications folder to install.</p>
+                  <p className="font-semibold text-slate-900">Try to open WebPit</p>
+                  <p className="text-sm text-slate-500 mt-0.5">Double-click WebPit in Applications. macOS will show a Gatekeeper warning — click <span className="font-semibold text-slate-700">OK</span> to dismiss it.</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="shrink-0 w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-sm">3</div>
+                <div className="shrink-0 w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-sm">3</div>
                 <div>
-                  <p className="font-semibold text-slate-900">Launch & enjoy</p>
-                  <p className="text-sm text-slate-500 mt-0.5">Open WebPit from Applications and start converting.</p>
+                  <p className="font-semibold text-slate-900">Right-click → Open <span className="ml-1 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-700 uppercase tracking-wide align-middle">Key step</span></p>
+                  <p className="text-sm text-slate-500 mt-0.5"><span className="font-semibold text-slate-700">Right-click</span> (or Control-click) the WebPit icon in Applications and choose <span className="font-semibold text-slate-700">Open</span>. A new dialog appears with an <span className="font-semibold text-slate-700">Open</span> button — click it. You only need to do this once.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div className="shrink-0 w-8 h-8 rounded-xl bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-sm">4</div>
+                <div>
+                  <p className="font-semibold text-slate-900">Alternative: System Settings</p>
+                  <p className="text-sm text-slate-500 mt-0.5">Or go to <span className="font-semibold text-slate-700">System Settings → Privacy &amp; Security</span> and click <span className="font-semibold text-slate-700">Open Anyway</span> next to the WebPit entry.</p>
                 </div>
               </div>
             </div>

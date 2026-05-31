@@ -110,13 +110,13 @@ export const ImageCard: React.FC<ImageCardProps> = ({ item, onRemove, onDownload
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-3 w-full sm:w-auto mt-4 sm:mt-0">
+        <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
           {item.status === 'done' && (
             <Button
               variant="outline"
               size="icon"
               onClick={() => setShowCompare(true)}
-              className="text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-colors border-slate-200"
+              className="shrink-0 w-11 h-11 sm:w-9 sm:h-9 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-colors border-slate-200"
               title="Compare"
             >
               <Eye className="w-4 h-4" />
@@ -127,7 +127,7 @@ export const ImageCard: React.FC<ImageCardProps> = ({ item, onRemove, onDownload
             variant="ghost"
             size="icon"
             onClick={() => onRemove(item.id)}
-            className="text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+            className="shrink-0 w-11 h-11 sm:w-9 sm:h-9 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors"
             title="Remove"
           >
             <X className="w-4 h-4" />
@@ -137,14 +137,14 @@ export const ImageCard: React.FC<ImageCardProps> = ({ item, onRemove, onDownload
             onClick={() => onDownload(item)}
             disabled={item.status !== 'done'}
             className={cn(
-              "flex-1 sm:flex-none gap-2 rounded-xl transition-all",
+              "flex-1 sm:flex-none h-11 sm:h-9 gap-2 rounded-xl transition-all",
               item.status === 'done' 
                 ? "bg-slate-900 text-white hover:bg-slate-800 hover:shadow-md" 
                 : "bg-slate-100 text-slate-400"
             )}
           >
             <Download className="w-4 h-4" />
-            <span className="sm:hidden">Download</span>
+            <span>Download</span>
           </Button>
         </div>
       </motion.div>

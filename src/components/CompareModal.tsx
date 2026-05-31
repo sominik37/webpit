@@ -31,19 +31,19 @@ export const CompareModal: React.FC<CompareModalProps> = ({ originalUrl, resultU
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] bg-slate-950/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-10"
+      className="fixed inset-0 z-[100] bg-slate-950/90 backdrop-blur-xl flex items-center justify-center p-2 sm:p-10"
     >
-      <div className="absolute top-6 right-6 flex items-center gap-4 z-50">
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-2 sm:gap-4 z-50">
         <div className="flex bg-white/10 rounded-full p-1 backdrop-blur-md border border-white/10">
            <button 
              onClick={() => setViewMode(prev => prev === 'slider' ? 'diff' : 'slider')} 
              className={cn(
-                "p-2 rounded-full transition-colors flex items-center gap-2 px-4 text-sm font-medium",
+                "p-2 rounded-full transition-colors flex items-center gap-2 px-3 sm:px-4 text-xs sm:text-sm font-medium",
                 viewMode === 'diff' ? "bg-white text-slate-900" : "text-white hover:bg-white/10"
              )}
            >
                 <Layers className="w-4 h-4" />
-                {viewMode === 'diff' ? 'Diff View' : 'Slider View'}
+                <span className="hidden sm:inline">{viewMode === 'diff' ? 'Diff View' : 'Slider View'}</span>
            </button>
            <div className="w-px h-6 bg-white/10 mx-1"></div>
            <button onClick={() => setZoom(prev => Math.min(prev + 0.5, 5))} className="p-2 text-white hover:bg-white/10 rounded-full transition-colors"><ZoomIn className="w-5 h-5"/></button>
@@ -51,9 +51,9 @@ export const CompareModal: React.FC<CompareModalProps> = ({ originalUrl, resultU
         </div>
         <button
           onClick={onClose}
-          className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all border border-white/10"
+          className="p-2.5 sm:p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all border border-white/10"
         >
-          <X className="w-6 h-6" />
+          <X className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
       </div>
 

@@ -252,7 +252,7 @@ export default function BlogPost() {
               year: 'numeric',
             })}
           </div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-12 leading-[1.1]">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-12 leading-[1.1]">
             {post.title}
           </h1>
           {post.mainImage && (
@@ -266,7 +266,7 @@ export default function BlogPost() {
           )}
         </header>
 
-        <div className="prose prose-lg prose-slate prose-blue prose-p:leading-[1.8] prose-li:leading-[1.8] max-w-none text-slate-700 bg-white p-8 md:p-12 lg:p-16 rounded-[2.5rem] border border-slate-200/50 shadow-sm mb-16">
+        <div className="prose prose-lg prose-slate prose-blue prose-p:leading-[1.8] prose-li:leading-[1.8] max-w-none text-slate-700 bg-white p-6 sm:p-8 md:p-12 lg:p-16 rounded-[2.5rem] border border-slate-200/50 shadow-sm mb-16">
           <PortableText 
             value={post.body} 
             components={{

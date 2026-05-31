@@ -1,6 +1,6 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
 // Lazy load pages for performance optimization
@@ -22,6 +22,8 @@ const PageLoader = () => (
 );
 
 export default function App() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   React.useEffect(() => {
     // Delay Google Analytics loading by 2 seconds to prioritize main content paint
     const timer = setTimeout(() => {
@@ -45,10 +47,10 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
-      {/* Header - Simplified for Desktop */}
-      <header className="bg-white/70 border-b border-slate-200/50 transition-all duration-300">
+      {/* Header */}
+      <header className="bg-white/70 border-b border-slate-200/50 transition-all duration-300 sticky top-0 z-50 backdrop-blur-md">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity" onClick={() => setMobileMenuOpen(false)}>
             <img 
               src="/logo.webp" 
               alt="WebPit Logo" 
@@ -58,23 +60,60 @@ export default function App() {
               fetchpriority="high"
             />
           </Link>
-          <div className="flex items-center gap-6">
-              <Link to="/blog" className="text-sm font-medium text-slate-800 hover:text-blue-600 transition-colors hidden sm:block">
+          {/* Desktop nav */}
+          <div className="hidden sm:flex items-center gap-6">
+              <Link to="/blog" className="text-sm font-medium text-slate-800 hover:text-blue-600 transition-colors">
                 Blog
               </Link>
-              <Link to="/download" className="text-sm font-medium text-slate-800 hover:text-blue-600 transition-colors hidden sm:block">
+              <Link to="/download" className="text-sm font-medium text-slate-800 hover:text-blue-600 transition-colors">
                 Desktop App
               </Link>
               <a
                 href="https://developers.google.com/speed/webp"
                 target="_blank"
                 rel="noreferrer"
-                className="text-sm text-slate-500 hover:text-slate-900 transition-colors hidden sm:block"
+                className="text-sm text-slate-500 hover:text-slate-900 transition-colors"
               >
                 About WebP
               </a>
           </div>
+          {/* Mobile hamburger */}
+          <button
+            className="sm:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors"
+            onClick={() => setMobileMenuOpen(prev => !prev)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
+        {/* Mobile nav drawer */}
+        {mobileMenuOpen && (
+          <div className="sm:hidden border-t border-slate-200/50 bg-white/95 backdrop-blur-md px-4 py-4 flex flex-col gap-1">
+            <Link
+              to="/blog"
+              className="text-sm font-medium text-slate-800 hover:text-blue-600 hover:bg-slate-50 transition-colors px-3 py-2.5 rounded-xl"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Blog
+            </Link>
+            <Link
+              to="/download"
+              className="text-sm font-medium text-slate-800 hover:text-blue-600 hover:bg-slate-50 transition-colors px-3 py-2.5 rounded-xl"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Desktop App
+            </Link>
+            <a
+              href="https://developers.google.com/speed/webp"
+              target="_blank"
+              rel="noreferrer"
+              className="text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors px-3 py-2.5 rounded-xl"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              About WebP
+            </a>
+          </div>
+        )}
       </header>
 
       <main className="flex-grow w-full">
@@ -167,7 +206,7 @@ export default function App() {
                 © {new Date().getFullYear()} WebPit. Processed locally for your privacy.
               </p>
 
-              <div className="flex items-center gap-6">
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
                 <Link to="/privacy" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Privacy</Link>
                 <Link to="/terms" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Terms</Link>
                 <Link to="/refund" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Refunds</Link>
