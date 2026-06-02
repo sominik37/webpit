@@ -59,12 +59,12 @@ export default function Privacy() {
 
                     <h3 className="text-xl font-semibold text-slate-900 mt-6 mb-2">Payment Information (Paddle)</h3>
                     <p>
-                        When you purchase the WebPit Desktop App, payments are processed by <strong>Paddle.com</strong>, our authorized reseller and Merchant of Record. Paddle collects your name, email address, billing address, and payment card details. We do not receive or store your full payment card information. We only receive your email address and the transaction status from Paddle.
+                        When you purchase the WebPit Mac App, payments are processed by <strong>Paddle.com</strong>, our authorized reseller and Merchant of Record. Paddle collects your name, email address, billing address, and payment card details. We do not receive or store your full payment card information. We only receive your email address and the transaction status from Paddle.
                     </p>
 
                     <h3 className="text-xl font-semibold text-slate-900 mt-6 mb-2">Email Information</h3>
                     <p>
-                        If you use the redownload form to request a new download link for the desktop app, we collect the email address you provide to look up your purchase. This information is used only to process your request and is not retained longer than necessary.
+                        If you use the redownload form to request a new download link for the Mac app, we collect the email address you provide to look up your purchase. This information is used only to process your request and is not retained longer than necessary.
                     </p>
 
                     <h3 className="text-xl font-semibold text-slate-900 mt-6 mb-2">Blog (Sanity CMS)</h3>
@@ -74,7 +74,7 @@ export default function Privacy() {
 
                     <h3 className="text-xl font-semibold text-slate-900 mt-6 mb-2">File Delivery (Cloudflare R2)</h3>
                     <p>
-                        The desktop app installer is stored in Cloudflare R2. When you download it, Cloudflare receives standard request metadata (IP address, user agent, timestamp) for the purpose of delivering the file.
+                        The Mac app installer is stored in Cloudflare R2. When you download it, Cloudflare receives standard request metadata (IP address, user agent, timestamp) for the purpose of delivering the file.
                     </p>
 
                     <h3 className="text-xl font-semibold text-slate-900 mt-6 mb-2">Local & Session Storage</h3>
@@ -88,7 +88,7 @@ export default function Privacy() {
                     <p>We use the information we collect for the following purposes:</p>
                     <ul className="list-disc pl-6 space-y-2">
                         <li>To operate, maintain, and improve the WebPit website and services</li>
-                        <li>To process and fulfill desktop app purchases and redownload requests</li>
+                        <li>To process and fulfill Mac app purchases and redownload requests</li>
                         <li>To analyze site usage and performance (via GA4 and Vercel Speed Insights)</li>
                         <li>To detect, prevent, and address technical issues or abuse</li>
                         <li>To communicate with you about your purchase or support requests</li>

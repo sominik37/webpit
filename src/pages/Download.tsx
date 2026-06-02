@@ -168,7 +168,6 @@ function ImagePlaceholder({ label, src }: { label: string; src?: string }) {
 
   return (
     <div className="w-full aspect-video rounded-2xl bg-slate-100 border-2 border-dashed border-slate-300 flex flex-col items-center justify-center gap-3 text-slate-400">
-      {/* Replace this entire div with your <img> or <video> */}
       <div className="w-12 h-12 rounded-xl bg-slate-200 flex items-center justify-center">
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
@@ -248,7 +247,7 @@ export default function DownloadPage() {
           >
             {/* <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-semibold mb-8">
               <Zap className="w-3.5 h-3.5" />
-              Native Desktop App
+              Native Mac App
             </span> */}
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
@@ -326,7 +325,7 @@ export default function DownloadPage() {
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 pb-0 -mb-1">
           <div className="w-full aspect-[16/9] rounded-t-3xl bg-slate-800 border border-white/10 border-b-0 flex flex-col items-center justify-center gap-4 text-slate-500 overflow-hidden">
             {/* Replace with hero app screenshot */}
-            <img src="/hero.webp" alt="WebPit for Mac" className="w-full h-full object-cover" />
+            <img src="/hero.webp" alt="WebPit for Mac" className="w-full h-full object-cover" fetchPriority="high" />
           </div>
         </div>
       </section>
@@ -338,7 +337,7 @@ export default function DownloadPage() {
             Built for power users
           </h2>
           <p className="text-lg text-slate-500 max-w-xl mx-auto">
-            The web tool is great for quick conversions. The desktop app is for when
+            The web tool is great for quick conversions. The Mac app is for when
             images are part of your actual workflow.
           </p>
         </div>
@@ -386,10 +385,10 @@ export default function DownloadPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 mb-4">
-              Web tool vs Desktop app
+              Web tool vs Mac App
             </h2>
             <p className="text-slate-500 text-lg">
-              The web tool stays free, forever. The desktop app is for when you need more.
+              The web tool stays free, forever. The Mac app is for when you need more.
             </p>
           </div>
 
@@ -399,7 +398,7 @@ export default function DownloadPage() {
                 <tr className="bg-slate-50 border-b border-slate-200">
                   <th className="p-5 text-sm font-semibold text-slate-600 w-1/2">Feature</th>
                   <th className="p-5 text-sm font-semibold text-slate-600 text-center">Web (Free)</th>
-                  <th className="p-5 text-sm font-semibold text-slate-900 text-center">Desktop App</th>
+                  <th className="p-5 text-sm font-semibold text-slate-900 text-center">Mac App</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">

@@ -26,7 +26,7 @@ export default function Terms() {
                         By accessing or using WebPit (the "Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to all of these Terms, please do not use the Service.
                     </p>
                     <p>
-                        These Terms apply to all visitors, users, and customers of WebPit, including both the free web tool at <strong>webpit.site</strong> and the paid WebPit Desktop App.
+                        These Terms apply to all visitors, users, and customers of WebPit, including both the free web tool at <strong>webpit.site</strong> and the paid WebPit Mac App.
                     </p>
                 </section>
 
@@ -37,7 +37,7 @@ export default function Terms() {
                     </p>
                     <ul className="list-disc pl-6 space-y-2">
                         <li><strong>Web Tool (Free)</strong> — A browser-based image converter and compressor. All processing happens locally on your device; no images are uploaded to any server.</li>
-                        <li><strong>WebPit Desktop App (Paid)</strong> — A downloadable desktop application sold at a one-time purchase price. Refer to Section 6 for details.</li>
+                        <li><strong>WebPit Mac App (Paid)</strong> — A downloadable Mac app sold at a one-time purchase price. Refer to Section 6 for details.</li>
                     </ul>
                 </section>
 
@@ -75,10 +75,10 @@ export default function Terms() {
                 <section>
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">5. Intellectual Property</h2>
                     <p>
-                        The WebPit name, logo, website design, desktop application, and all related content are the intellectual property of <strong>WebPit</strong>. You may not reproduce, modify, distribute, or create derivative works without prior written consent.
+                        The WebPit name, logo, website design, Mac app, and all related content are the intellectual property of <strong>WebPit</strong>. You may not reproduce, modify, distribute, or create derivative works without prior written consent.
                     </p>
                     <p>
-                        The WebPit Desktop App is licensed, not sold. The license granted upon purchase is personal, non-transferable, and non-exclusive. You may install and use the app on your own devices for personal or commercial purposes.
+                        The WebPit Mac App is licensed, not sold. The license granted upon purchase is personal, non-transferable, and non-exclusive. You may install and use the app on your own devices for personal or commercial purposes.
                     </p>
                     <p>
                         Images you process using WebPit remain your property. We claim no ownership over your content.
@@ -86,9 +86,9 @@ export default function Terms() {
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">6. WebPit Desktop App — Paid Product</h2>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-4">6. WebPit Mac App — Paid Product</h2>
                     <p>
-                        WebPit for Desktop is a paid application sold at a one-time purchase price of <strong>$8.99 USD</strong>. Payments are processed securely by <strong>Paddle.com</strong>, our authorized reseller and Merchant of Record.
+                        WebPit for Mac is a paid application sold at a one-time purchase price of <strong>$8.99 USD</strong>. Payments are processed securely by <strong>Paddle.com</strong>, our authorized reseller and Merchant of Record.
                     </p>
                     <p>
                         Upon successful payment, you will receive a download link via email. The license grants you a personal, non-transferable right to install and use the application on your own devices.
@@ -104,7 +104,7 @@ export default function Terms() {
                 <section>
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">7. Refund Policy</h2>
                     <p>
-                        We offer a <strong>14-day money-back guarantee</strong> on the WebPit Desktop App. If you are not satisfied, you can request a full refund within 14 days of purchase. See our full <a href="/refund" className="text-blue-600 hover:underline">Refund Policy</a> for instructions.
+                        We offer a <strong>14-day money-back guarantee</strong> on the WebPit Mac App. If you are not satisfied, you can request a full refund within 14 days of purchase. See our full <a href="/refund" className="text-blue-600 hover:underline">Refund Policy</a> for instructions.
                     </p>
                     <p>
                         The free web tool is not subject to this refund policy as it is provided at no cost.
@@ -174,7 +174,7 @@ export default function Terms() {
                         Upon termination, your right to use the Service will immediately cease. Provisions of these Terms that by their nature should survive termination (including intellectual property, disclaimers, and limitations of liability) shall survive.
                     </p>
                     <p>
-                        If you have purchased the Desktop App, termination of access to the web tool does not affect your license to use the desktop application.
+                        If you have purchased the Mac App, termination of access to the web tool does not affect your license to use the Mac app.
                     </p>
                 </section>
 

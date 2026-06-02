@@ -57,7 +57,7 @@ export default function App() {
               width="160" 
               height="48" 
               className="h-12 w-auto object-contain" 
-              fetchpriority="high"
+              fetchPriority="high"
             />
           </Link>
           {/* Desktop nav */}
@@ -66,7 +66,7 @@ export default function App() {
                 Blog
               </Link>
               <Link to="/download" className="text-sm font-medium text-slate-800 hover:text-blue-600 transition-colors">
-                Desktop App
+                Mac App
               </Link>
               <a
                 href="https://developers.google.com/speed/webp"
@@ -101,7 +101,7 @@ export default function App() {
               className="text-sm font-medium text-slate-800 hover:text-blue-600 hover:bg-slate-50 transition-colors px-3 py-2.5 rounded-xl"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Desktop App
+              Mac App
             </Link>
             <a
               href="https://developers.google.com/speed/webp"

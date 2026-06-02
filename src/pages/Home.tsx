@@ -74,8 +74,19 @@ export default function Home({ type = 'default' }: { type?: string }) {
   const currentSEO = seoData[type as keyof typeof seoData] || seoData.default;
   useSEO({ title: currentSEO.title, description: currentSEO.description });
 
+  // Yield to main thread so the browser can handle pending interactions
+  const yieldToMain = async () => {
+    if ('scheduler' in window && 'yield' in (window as any).scheduler) {
+      await (window as any).scheduler.yield();
+    } else {
+      await new Promise(r => setTimeout(r, 0));
+    }
+  };
+
   // Process a single image
   const processImage = async (img: ProcessedImage, targetQuality: number) => {
+    await yieldToMain();
+
     return new Promise<ProcessedImage>((resolve) => {
       const image = new Image();
       image.src = img.previewUrl;
@@ -164,7 +175,7 @@ export default function Home({ type = 'default' }: { type?: string }) {
 
     setImages(prev => [...prev, ...newImages]);
 
-    newImages.forEach(img => {
+    newImages.forEach((img, i) => {
       setTimeout(async () => {
         setImages(current =>
           current.map(i => i.id === img.id ? { ...i, status: 'processing' } : i)
@@ -185,7 +196,7 @@ export default function Home({ type = 'default' }: { type?: string }) {
         setImages(current =>
           current.map(i => i.id === img.id ? result : i)
         );
-      }, 100);
+      }, 100 + i * 50);
     });
   }, [quality, canProcess, consume]);
 
@@ -247,42 +258,49 @@ export default function Home({ type = 'default' }: { type?: string }) {
     setQuality(Number(e.target.value));
   };
 
-  const handleReprocessAll = () => {
+  const handleReprocessAll = async () => {
     if (images.length === 0) return;
 
     setIsProcessing(true);
 
-    const promises = images.map(async (img) => {
-      setImages(current =>
-        current.map(i => i.id === img.id ? { ...i, status: 'processing' } : i)
-      );
-      return processImage({ ...img, resultBlob: undefined, resultUrl: undefined }, quality);
-    });
+    const CHUNK_SIZE = 3;
+    const results: ProcessedImage[] = [];
 
-    Promise.all(promises).then(results => {
-      const successfulConversions = results.filter(r => r.status === 'done');
-        if (successfulConversions.length > 0) {
-          console.log('📊 GA Event: batch_reprocess', successfulConversions.length);
-          window.gtag?.('event', 'batch_reprocess', {
+    for (let i = 0; i < images.length; i += CHUNK_SIZE) {
+      const chunk = images.slice(i, i + CHUNK_SIZE);
+      const chunkResults = await Promise.all(
+        chunk.map(async (img) => {
+          setImages(current =>
+            current.map(i => i.id === img.id ? { ...i, status: 'processing' } : i)
+          );
+          return processImage({ ...img, resultBlob: undefined, resultUrl: undefined }, quality);
+        })
+      );
+      results.push(...chunkResults);
+      await yieldToMain();
+    }
+
+    const successfulConversions = results.filter(r => r.status === 'done');
+      if (successfulConversions.length > 0) {
+        console.log('📊 GA Event: batch_reprocess', successfulConversions.length);
+        window.gtag?.('event', 'batch_reprocess', {
+          'event_category': 'conversion',
+          'count': successfulConversions.length,
+          'quality': quality
+        });
+
+        successfulConversions.forEach(result => {
+          window.gtag?.('event', 'image_converted', {
             'event_category': 'conversion',
-            'count': successfulConversions.length,
+            'event_label': result.originalFile.name,
+            'is_original_kept': result.isOriginalKept,
             'quality': quality
           });
+        });
+      }
 
-          // Also fire individual events for each image in the batch
-          successfulConversions.forEach(result => {
-            window.gtag?.('event', 'image_converted', {
-              'event_category': 'conversion',
-              'event_label': result.originalFile.name,
-              'is_original_kept': result.isOriginalKept,
-              'quality': quality
-            });
-          });
-        }
-
-      setImages(results);
-      setIsProcessing(false);
-    });
+    setImages(results);
+    setIsProcessing(false);
   };
 
   const totalOriginalSize = images.reduce((acc, img) => acc + img.originalSize, 0);
@@ -358,27 +376,29 @@ export default function Home({ type = 'default' }: { type?: string }) {
       {/* Upload Area */}
       <Dropzone onFilesDrop={handleFilesDrop} />
 
-      {/* Desktop App Promo */}
+      {/* Mac App Promo */}
       <Link
         to="/download"
-        className="group flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900 text-white rounded-2xl px-6 py-4 hover:bg-slate-800 transition-all hover:shadow-lg"
+        className="group block bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-8 sm:p-10 hover:from-slate-800 hover:to-slate-700 transition-all hover:shadow-2xl hover:-translate-y-0.5 border border-white/5"
       >
-        <div className="flex items-center gap-4">
-          <div className="shrink-0 w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center">
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div className="flex items-start gap-5">
+            <div className="shrink-0 w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10">
+              <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-xl font-bold">Need more than 20 files/day? Get the Mac App</p>
+              <p className="text-sm text-slate-400 mt-1.5">Unlimited conversions · Watch folders · Menu bar agent · Clipboard conversion · Native speed</p>
+            </div>
+          </div>
+          <div className="shrink-0 inline-flex items-center gap-2 bg-white text-slate-900 font-bold px-6 py-3.5 rounded-xl hover:bg-slate-100 transition-all group-hover:shadow-lg text-base ml-19 sm:ml-0">
+            Download Now — $8.99
+            <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
             </svg>
           </div>
-          <div>
-            <p className="text-sm font-semibold">Need more than 20 files/day? Try WebPit for Mac</p>
-            <p className="text-xs text-slate-400 mt-0.5">Unlimited conversions · Watch folders · Menu bar · Clipboard · Native speed</p>
-          </div>
-        </div>
-        <div className="shrink-0 flex items-center gap-1 text-slate-400 group-hover:text-white transition-colors text-sm font-medium ml-13 sm:ml-0">
-          Download Now
-          <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
         </div>
       </Link>
 

@@ -70,7 +70,7 @@ export default function Redownload() {
           className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Desktop App
+          Back to Mac App
         </Link>
 
         <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">

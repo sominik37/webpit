@@ -5,7 +5,7 @@ import { useSEO } from '../hooks/useSEO';
 export default function Refund() {
   useSEO({
     title: 'Refund Policy | WebPit',
-    description: 'WebPit offers a 14-day no-questions-asked refund policy for the desktop app.',
+    description: 'WebPit offers a 14-day no-questions-asked refund policy for the Mac app.',
   });
 
   return (
@@ -57,7 +57,7 @@ export default function Refund() {
           <h2 className="text-2xl font-bold text-slate-900 mb-4">Eligibility</h2>
           <ul className="list-disc pl-6 space-y-2">
             <li>Refund requests must be made within 14 days of the original purchase date.</li>
-            <li>This policy applies to the WebPit Desktop App only.</li>
+            <li>This policy applies to the WebPit Mac App only.</li>
             <li>The web tool at webpit.site is free and not subject to this policy.</li>
           </ul>
         </section>

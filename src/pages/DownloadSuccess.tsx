@@ -240,7 +240,7 @@ export default function DownloadSuccess() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link to="/download" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
             <ArrowLeft className="w-4 h-4" />
-            Back to Desktop App
+            Back to Mac App
           </Link>
           <span className="hidden sm:block text-slate-300">·</span>
           <Link to="/download/redownload" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
