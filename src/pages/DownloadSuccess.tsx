@@ -222,7 +222,7 @@ export default function DownloadSuccess() {
             </h1>
             <p className="text-lg text-slate-500 mb-8">{errorMsg}</p>
             <a
-              href="mailto:usman.hyder37@outlook.com"
+              href="mailto:contact@webpit.site"
               className="inline-flex items-center gap-2 bg-slate-900 text-white font-bold px-8 py-4 rounded-2xl hover:bg-slate-800 transition-all mb-8"
             >
               Contact Support

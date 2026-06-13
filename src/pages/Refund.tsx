@@ -36,10 +36,10 @@ export default function Refund() {
           <p>
             Send an email to{' '}
             <a
-              href="mailto:usman.hyder37@outlook.com"
+              href="mailto:contact@webpit.site"
               className="text-blue-600 hover:underline"
             >
-              usman.hyder37@outlook.com
+              contact@webpit.site
             </a>{' '}
             with the subject line <strong>"Refund Request"</strong> and include:
           </p>
@@ -67,10 +67,10 @@ export default function Refund() {
           <p>
             If you have any questions about this policy or your purchase, reach out at{' '}
             <a
-              href="mailto:usman.hyder37@outlook.com"
+              href="mailto:contact@webpit.site"
               className="text-blue-600 hover:underline"
             >
-              usman.hyder37@outlook.com
+              contact@webpit.site
             </a>
             . We typically respond within 24 hours on weekdays.
           </p>

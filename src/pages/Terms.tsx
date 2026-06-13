@@ -222,7 +222,7 @@ export default function Terms() {
                         If you have any questions about these Terms, please reach out:
                     </p>
                     <a
-                        href="mailto:usman.hyder37@outlook.com"
+                        href="mailto:contact@webpit.site"
                         className="inline-flex items-center gap-2 bg-slate-900 text-white font-bold px-8 py-4 rounded-2xl hover:bg-slate-800 transition-all"
                     >
                         <Mail className="w-5 h-5" />

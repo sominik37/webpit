@@ -186,7 +186,7 @@ export default function Redownload() {
         <p className="text-center text-sm text-slate-400 mt-6">
           Can't find your order email?{' '}
           <a
-            href="mailto:usman.hyder37@outlook.com"
+            href="mailto:contact@webpit.site"
             className="text-slate-600 hover:text-slate-900 underline underline-offset-2 transition-colors"
           >
             Contact support
