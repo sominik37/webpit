@@ -258,7 +258,7 @@ export default function BlogPost() {
           {post.mainImage && (
             <div className="rounded-[2.5rem] overflow-hidden shadow-2xl mb-16 border border-white relative">
               <img
-                src={urlFor(post.mainImage).width(1200).height(630).url()}
+                src={urlFor(post.mainImage).width(1200).height(630).fit('crop').url()}
                 alt={post.title}
                 className="w-full"
               />
