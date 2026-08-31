@@ -11,6 +11,7 @@ import { formatBytes } from '../lib/utils';
 import { useFileLimit } from '../hooks/useFileLimit';
 
 import { useSEO } from '../hooks/useSEO';
+import { useJsonLd } from '../lib/seo';
 
 // Declare gtag for TypeScript
 declare global {
@@ -32,47 +33,196 @@ export default function Home({ type = 'default' }: { type?: string }) {
       description: "Convert JPG and PNG to WebP instantly. 100% client-side processing means your images never leave your browser. Free for up to 20 files/day — no signups.",
       heading: "How to Convert and Compress Your Images",
       contentDesc: "Using WebPit is as easy as \"Drag, Slide, and Save.\" You don’t need to be a tech expert to get professional results.",
-      uploadDesc: "Drag and drop your JPG, PNG, or GIF files directly into the box above. You can even upload multiple images at once!"
+      uploadDesc: "Drag and drop your JPG, PNG, or GIF files directly into the box above. You can even upload multiple images at once!",
+      faqItems: [
+        {
+          question: "What is a WebP file?",
+          answer: "Think of WebP as a \"smarter\" version of a photo. It was created by Google to help the internet move faster. It compresses the data inside an image much better than older formats like JPEG or PNG.",
+        },
+        {
+          question: "Will I lose quality if I compress my images?",
+          answer: "Technically, yes, but your eyes likely won't see the difference! At our recommended 80% setting, the file size drops dramatically while the image still looks beautiful to the human eye.",
+        },
+        {
+          question: "Is WebP supported by all browsers?",
+          answer: "Yes! All modern browsers—including Google Chrome, Apple Safari, Microsoft Edge, and Mozilla Firefox—fully support WebP images. If you use them on your website, everyone will be able to see them.",
+        },
+        {
+          question: "Why does image size matter for SEO?",
+          answer: "Google loves fast websites. When your images are small and load quickly, Google ranks your site higher in search results. Using WebP is one of the easiest ways to give your website a \"speed boost.\"",
+        },
+      ],
     },
     png: {
       title: "Convert PNG to WebP Free | Maintain Transparency",
       description: "Fastest way to convert PNG to WebP with transparent backgrounds. Shrink file sizes up to 80% with no loss in visual quality. Free for up to 20 files/day.",
       heading: "Easily Convert PNG to WebP in Seconds",
       contentDesc: "Looking to save space while keeping transparent backgrounds? WebPit converts your transparent PNGs to much smaller WebP files instantly.",
-      uploadDesc: "Drag and drop your PNG files directly into the box above. WebPit preserves alpha transparency perfectly."
+      uploadDesc: "Drag and drop your PNG files directly into the box above. WebPit preserves alpha transparency perfectly.",
+      faqItems: [
+        {
+          question: "Does WebP support transparent backgrounds?",
+          answer: "Yes. WebP fully supports alpha transparency, so your PNG's clear background is preserved pixel-for-pixel when you convert to WebP.",
+        },
+        {
+          question: "Will I lose the transparency of my PNG when converting?",
+          answer: "No. WebPit keeps the alpha channel intact, so edges, shadows, and soft gradients around your subject stay clean and transparent.",
+        },
+        {
+          question: "How much smaller will my transparent PNG become?",
+          answer: "Transparent PNGs often shrink by 50–80% as WebP because WebP compresses both color and alpha channels far more efficiently.",
+        },
+        {
+          question: "Where should I use transparent WebP images?",
+          answer: "Logos, icons, product cut-outs, and any image with a clear background—especially on websites where every kilobyte affects load speed.",
+        },
+      ],
     },
     jpg: {
       title: "Convert JPG to WebP Free | Shrink Image Sizes Instantly",
       description: "Convert your heavy JPG images to fast-loading WebP format. Improve your website speed and SEO rankings today. Free for up to 20 files/day.",
       heading: "Convert JPG to WebP for Faster Load Times",
       contentDesc: "WebPit takes your heavy JPG files and shrinks them to WebP format, offering immense file size savings while maintaining crisp details.",
-      uploadDesc: "Drag and drop your JPG images directly into the box above to start saving space instantly."
+      uploadDesc: "Drag and drop your JPG images directly into the box above to start saving space instantly.",
+      faqItems: [
+        {
+          question: "How much smaller will a JPG be as WebP?",
+          answer: "JPGs usually drop 25–35% in file size as WebP at the same visual quality, and far more at lower quality settings.",
+        },
+        {
+          question: "Will my JPG photos look different as WebP?",
+          answer: "At the recommended 80% setting the difference is barely perceptible. WebP's smarter compression keeps photos looking crisp while using far less data.",
+        },
+        {
+          question: "What quality setting should I use for JPG photos?",
+          answer: "80% is the sweet spot for photographs—big savings with no visible loss. You can drop to 60–70% for casual images or raise it for fine art.",
+        },
+        {
+          question: "Why should I convert JPG to WebP for my website?",
+          answer: "Smaller image files mean faster page loads, better Core Web Vitals, and higher search rankings—especially on mobile connections.",
+        },
+      ],
     },
     jpeg: {
       title: "Convert JPEG to WebP Free | Optimize for Web",
       description: "Optimize JPEG photos to WebP exactly in your browser. Dramatically reduce file size for your website without losing perceptible quality. Free for up to 20 files/day.",
       heading: "Shrink JPEG to WebP Images Quickly",
       contentDesc: "Fast websites rank higher on Google. Convert your JPEGs to the modern WebP format securely in your browser to boost performance.",
-      uploadDesc: "Drag and drop your JPEG photos directly into the box above."
+      uploadDesc: "Drag and drop your JPEG photos directly into the box above.",
+      faqItems: [
+        {
+          question: "Is WebP better than JPEG for web photos?",
+          answer: "For the web, yes. WebP produces noticeably smaller files than JPEG at comparable quality, which translates to faster pages and lower bandwidth costs.",
+        },
+        {
+          question: "Do I need to worry about losing detail when converting JPEG to WebP?",
+          answer: "At 80% quality, any difference is hard to see with the naked eye. Photos keep their detail while shedding 25–35% of their file weight.",
+        },
+        {
+          question: "Can I convert batches of JPEG photos at once?",
+          answer: "Yes—drag in as many JPEGs as you like. WebPit processes them all together and lets you download everything as a single ZIP.",
+        },
+        {
+          question: "How does converting JPEG to WebP speed up my site?",
+          answer: "Smaller images load faster on every device. Since Google treats page speed as a ranking factor, WebP conversions can directly lift your SEO.",
+        },
+      ],
     },
     gif: {
       title: "Convert GIF to Static WebP | Compress Heavy Frames",
       description: "Turn heavy GIFs into optimized WebP formats in seconds. Fully private browser-based conversion. Free for up to 20 files/day.",
       heading: "Optimize GIF to WebP Quickly",
       contentDesc: "Turn those bulky GIFs into highly optimized WebP files instantly for much better loading performance.",
-      uploadDesc: "Drag and drop your GIF files directly into the box above."
+      uploadDesc: "Drag and drop your GIF files directly into the box above.",
+      faqItems: [
+        {
+          question: "Does converting a GIF to WebP keep the animation?",
+          answer: "WebPit converts GIFs to a single optimized WebP frame—ideal for memes and screenshots where you want the look without the multi-frame overhead.",
+        },
+        {
+          question: "How much smaller is a WebP compared to a GIF?",
+          answer: "A static frame from a GIF is often 60–90% smaller as WebP because GIF's 256-color palette is replaced with true 24-bit compression.",
+        },
+        {
+          question: "What happens to GIF frames when converted?",
+          answer: "The first frame is used as the WebP output by default, so you keep the poster image you see—just at a fraction of the file size.",
+        },
+        {
+          question: "When should I convert a GIF to static WebP?",
+          answer: "Whenever a GIF is used as a thumbnail, logo, or decorative image. Animated GIFs stay heavy; a static WebP keeps the look and loads instantly.",
+        },
+      ],
     },
     compress: {
       title: "Compress WebP Images | Advanced WebP Optimizer",
       description: "Compress and optimize your existing WebP images even further. Fine-tune image quality for the absolute best performance on the web. Free for up to 20 files/day.",
       heading: "Compress WebP for Ultimate Performance",
       contentDesc: "Need to squeeze every last byte out of your images? Use our advanced sliders to compress standard image files or existing WebP formats without quality loss.",
-      uploadDesc: "Drag and drop your images to compress them directly in your browser."
-    }
+      uploadDesc: "Drag and drop your images to compress them directly in your browser.",
+      faqItems: [
+        {
+          question: "Can WebP files be compressed further?",
+          answer: "Yes. Many WebP files carry more quality than needed. Re-encoding at a lower quality setting can shave an additional 10–30% without visible loss.",
+        },
+        {
+          question: "How much more can I shrink an existing WebP?",
+          answer: "That depends on how it was first encoded. Heavily compressed WebP files save little, but loosely compressed ones can lose a surprising amount of weight.",
+        },
+        {
+          question: "What's the difference between converting and compressing?",
+          answer: "Converting changes the format (for example JPG → WebP). Compressing re-encodes an existing WebP at a lower quality to make it smaller.",
+        },
+        {
+          question: "What quality setting should I use when compressing WebP?",
+          answer: "Start at 80% and slide down until you find the smallest size that still looks right to you—for most images 70–80% is the safe zone.",
+        },
+      ],
+    },
   };
 
   const currentSEO = seoData[type as keyof typeof seoData] || seoData.default;
   useSEO({ title: currentSEO.title, description: currentSEO.description });
+
+  const typeResources: Record<string, { title: string; slug: string }[]> = {
+    default: [
+      { title: "WebP vs JPEG vs PNG vs AVIF: The 2026 Format Guide", slug: "webp-vs-jpeg-vs-png-vs-avif-the-2026-format-decision-guide" },
+      { title: "The Ultimate Guide to Image SEO in 2026", slug: "the-ultimate-guide-to-image-seo-in-2026-why-webp-is-still-king" },
+      { title: "Core Web Vitals: Why Your Images Kill Rankings", slug: "the-ultimate-guide-to-core-web-vitals-why-your-images-are-killing-your-google-ranking" },
+    ],
+    png: [
+      { title: "PNG vs WebP: Transparency Without the 5MB File", slug: "png-vs-webp-how-to-keep-your-transparency-without-the-5mb-file-size" },
+      { title: "WebP vs JPEG vs PNG vs AVIF: The 2026 Format Guide", slug: "webp-vs-jpeg-vs-png-vs-avif-the-2026-format-decision-guide" },
+    ],
+    jpg: [
+      { title: "WebP vs JPEG vs PNG vs AVIF: The 2026 Format Guide", slug: "webp-vs-jpeg-vs-png-vs-avif-the-2026-format-decision-guide" },
+      { title: "The Ultimate Guide to Image SEO in 2026", slug: "the-ultimate-guide-to-image-seo-in-2026-why-webp-is-still-king" },
+    ],
+    jpeg: [
+      { title: "WebP vs JPEG vs PNG vs AVIF: The 2026 Format Guide", slug: "webp-vs-jpeg-vs-png-vs-avif-the-2026-format-decision-guide" },
+      { title: "The Ultimate Guide to Image SEO in 2026", slug: "the-ultimate-guide-to-image-seo-in-2026-why-webp-is-still-king" },
+    ],
+    gif: [
+      { title: "WebP vs JPEG vs PNG vs AVIF: The 2026 Format Guide", slug: "webp-vs-jpeg-vs-png-vs-avif-the-2026-format-decision-guide" },
+    ],
+    compress: [
+      { title: "The Ultimate Guide to Image SEO in 2026", slug: "the-ultimate-guide-to-image-seo-in-2026-why-webp-is-still-king" },
+      { title: "Core Web Vitals: Why Your Images Kill Rankings", slug: "the-ultimate-guide-to-core-web-vitals-why-your-images-are-killing-your-google-ranking" },
+    ],
+  };
+  const resources = typeResources[type as keyof typeof typeResources] || typeResources.default;
+
+  useJsonLd(
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: currentSEO.faqItems.map((f) => ({
+        "@type": "Question",
+        name: f.question,
+        acceptedAnswer: { "@type": "Answer", text: f.answer },
+      })),
+    },
+    'faq-jsonld'
+  );
 
   // Yield to main thread so the browser can handle pending interactions
   const yieldToMain = async () => {
@@ -311,6 +461,9 @@ export default function Home({ type = 'default' }: { type?: string }) {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+      <h1 className="sr-only">
+        {type === 'default' ? "Free WebP Image Converter — Fast, Private & Secure" : currentSEO.title}
+      </h1>
       {/* Daily limit modal */}
       <MacAppPromoModal open={showLimitModal} onClose={() => setShowLimitModal(false)} />
       {/* Controls & Stats */}
@@ -550,22 +703,12 @@ export default function Home({ type = 'default' }: { type?: string }) {
         <section className="space-y-10 pt-8">
           <h2 className="text-3xl font-bold tracking-tight text-slate-900 text-center">Frequently Asked Questions (FAQ)</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
-            <div className="space-y-3">
-              <h3 className="font-semibold text-lg text-slate-900">What is a WebP file?</h3>
-              <p className="text-slate-600 leading-relaxed">Think of WebP as a "smarter" version of a photo. It was created by Google to help the internet move faster. It compresses the data inside an image much better than older formats like JPEG or PNG.</p>
-            </div>
-            <div className="space-y-3">
-              <h3 className="font-semibold text-lg text-slate-900">Will I lose quality if I compress my images?</h3>
-              <p className="text-slate-600 leading-relaxed">Technically, yes, but your eyes likely won't see the difference! At our recommended 80% setting, the file size drops dramatically while the image still looks beautiful to the human eye.</p>
-            </div>
-            <div className="space-y-3">
-              <h3 className="font-semibold text-lg text-slate-900">Is WebP supported by all browsers?</h3>
-              <p className="text-slate-600 leading-relaxed">Yes! All modern browsers—including Google Chrome, Apple Safari, Microsoft Edge, and Mozilla Firefox—fully support WebP images. If you use them on your website, everyone will be able to see them.</p>
-            </div>
-            <div className="space-y-3">
-              <h3 className="font-semibold text-lg text-slate-900">Why does image size matter for SEO?</h3>
-              <p className="text-slate-600 leading-relaxed">Google loves fast websites. When your images are small and load quickly, Google ranks your site higher in search results. Using WebP is one of the easiest ways to give your website a "speed boost."</p>
-            </div>
+            {currentSEO.faqItems.map((item) => (
+              <div key={item.question} className="space-y-3">
+                <h3 className="font-semibold text-lg text-slate-900">{item.question}</h3>
+                <p className="text-slate-600 leading-relaxed">{item.answer}</p>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -614,6 +757,32 @@ export default function Home({ type = 'default' }: { type?: string }) {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* From the Blog — internal links to relevant guides */}
+        <section className="space-y-6">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">Learn More About Image Optimization</h2>
+          <p className="text-slate-500 text-base max-w-2xl">
+            Dig deeper into formats, page speed, and how images affect your search rankings.
+          </p>
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {resources.map((r) => (
+              <li key={r.slug}>
+                <Link
+                  to={`/blog/${r.slug}`}
+                  className="block h-full bg-white rounded-2xl border border-slate-200/60 p-5 hover:border-blue-200 hover:shadow-md transition-all"
+                >
+                  <span className="text-sm font-semibold text-slate-800 leading-relaxed">{r.title}</span>
+                  <span className="mt-2 flex items-center text-xs font-bold text-blue-600">
+                    Read article
+                    <svg className="w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </section>
       </div>
     </div>

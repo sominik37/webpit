@@ -7,15 +7,18 @@ const BASE_URL = 'https://webpit.site';
 
 async function generateSitemap() {
   const staticRoutes = [
-    '',
+    '/',
     '/blog',
+    '/about',
     '/png-to-webp',
     '/jpg-to-webp',
     '/jpeg-to-webp',
     '/gif-to-webp',
     '/compress-webp',
+    '/download',
     '/privacy',
     '/terms',
+    '/refund',
   ];
 
   // Fetch blog posts from Sanity
@@ -43,8 +46,8 @@ ${staticRoutes
     (route) => `  <url>
     <loc>${BASE_URL}${route}</loc>
     <lastmod>${today}</lastmod>
-    <changefreq>${route === '' ? 'daily' : 'monthly'}</changefreq>
-    <priority>${route === '' ? '1.0' : '0.8'}</priority>
+    <changefreq>${route === '/' ? 'daily' : 'monthly'}</changefreq>
+    <priority>${route === '/' ? '1.0' : '0.8'}</priority>
   </url>`
   )
   .join('\n')}

@@ -1,0 +1,315 @@
+{
+  "summary": {
+    "health_score": 51,
+    "business_type": "Free web tool (SaaS) + paid macOS desktop app with SEO content blog",
+    "domain": "webpit.site",
+    "audit_date": "2026-08-31",
+    "top_findings": [
+      "Global canonical hardcoded to homepage on every route — all ranking signals collapse",
+      "Pure client-side rendering with no SSR/prerender — crawlers risk indexing loading states",
+      "robots.txt blocks all major AI crawlers (GPTBot, Google-Extended, CCBot, ClaudeBot) + ai-train=no",
+      "Soft-404s: catch-all rewrite returns 200 HTML for every unknown URL and missing asset",
+      "Only one JSON-LD block site-wide; no BlogPosting, FAQPage, SoftwareApplication, or Organization",
+      "5 tool landing pages are near-duplicates (shared FAQ, benefits, comparison table)",
+      "139KB logo.webp preloaded high-priority; hero.webp (93KB) preloaded globally but used only on /download"
+    ],
+    "quick_wins": [
+      "Add FAQPage JSON-LD for the homepage FAQ section",
+      "Add SoftwareApplication JSON-LD to /download for the $8.99 app",
+      "Add BlogPosting + BreadcrumbList JSON-LD to blog posts",
+      "Stop global hero.webp preload and recompress logo.webp (139KB -> ~20KB)",
+      "Set preload=none + lazy load the four autoplay MP4s on /download (~2MB)"
+    ]
+  },
+  "categories": [
+    {
+      "name": "Technical SEO",
+      "score": 52,
+      "what_works": [
+        "robots.txt and sitemap.xml present and valid; live sitemap includes all 9 blog posts",
+        "HSTS enabled, HTTPS via Cloudflare, NEL/report-to configured",
+        "SPA links use data-discover for crawler-friendly navigation"
+      ],
+      "findings": [
+        {
+          "title": "Canonical hardcoded to homepage on every route",
+          "severity": "Critical",
+          "description": "index.html:55 sets rel=canonical to https://webpit.site/; useSEO.ts never updates it. Verified: rendered /blog/<slug> declares homepage canonical while rendering its own H1. All 9 posts + /download + tool pages point canonical at the homepage.",
+          "recommendation": "Set per-route canonical in useSEO (fast) and ideally emit it in prerendered raw HTML (proper)."
+        },
+        {
+          "title": "No SSR/prerendering — content depends on JS + async Sanity fetch",
+          "severity": "Critical",
+          "description": "Every route serves the same ~4.8KB shell. A 1.8s headless render of a blog post captured only the nav (Blog/Mac App/About WebP) — no article, no H1. Google can render JS but render-budget pressure yields empty pages.",
+          "recommendation": "Pre-render routes with vite-plugin-prerender or vite-ssg; reuse the sitemap script's Sanity query to bake blog posts into static HTML."
+        },
+        {
+          "title": "Soft-404s from catch-all rewrite",
+          "severity": "Critical",
+          "description": "vercel.json rewrites /(.*) -> / so unknown URLs and missing assets return 200 text/html. Verified: /nonexistent-page-xyz, /apple-touch-icon.png, /downshare.webp, /favicon.ico, /llms.txt all 200 HTML.",
+          "recommendation": "Return true 404 for unknown paths (middleware/notFound), and add real files for referenced assets."
+        },
+        {
+          "title": "Missing/404 asset references in head",
+          "severity": "High",
+          "description": "index.html references /apple-touch-icon.png (absent) and /download uses og:image /downshare.webp (absent) — both serve the SPA shell as 200 HTML.",
+          "recommendation": "Add real apple-touch-icon.png, favicon.ico, and a valid /download OG image to public/."
+        },
+        {
+          "title": "Committed sitemap is stale; regeneration depends on manual build",
+          "severity": "Medium",
+          "description": "public/sitemap.xml in repo lists 3 of 9 posts (lastmod May 31). Regenerated only when `npm run build` runs npm run sitemap; a Sanity fetch failure silently ships the stale file.",
+          "recommendation": "Regenerate and commit fresh sitemap; move generation into CI/deploy hook."
+        },
+        {
+          "title": "URL variant inconsistency (sitemap vs canonical)",
+          "severity": "Low",
+          "description": "Sitemap uses https://webpit.site (no slash); canonical and OG use https://webpit.site/.",
+          "recommendation": "Standardize on trailing-slash form in the sitemap generator."
+        }
+      ]
+    },
+    {
+      "name": "Content Quality",
+      "score": 58,
+      "what_works": [
+        "Substantive homepage copy: how-to, comparison table, FAQ, benefits",
+        "9 relevant blog posts with related/prev-next internal linking",
+        "Thorough Privacy, Terms, and Refund pages"
+      ],
+      "findings": [
+        {
+          "title": "5 tool landing pages are near-duplicates",
+          "severity": "High",
+          "description": "/png-to-webp, /jpg-to-webp, /jpeg-to-webp, /gif-to-webp, /compress-webp share the same FAQ, benefits, and comparison table; only heading/description/uploadDesc differ (Home.tsx seoData).",
+          "recommendation": "Write unique FAQ + benefit copy per format; use unique FAQPage schema per page."
+        },
+        {
+          "title": "Weak E-E-A-T signals",
+          "severity": "High",
+          "description": "No About page, no author pages/bios on blog posts, no company page; only JSON-LD Person node with name. No Organization schema with sameAs to X/LinkedIn/Reddit.",
+          "recommendation": "Add /about, author bylines + pages, Organization schema, and profile links."
+        },
+        {
+          "title": "Blog posts lack author/date trust signals in rendered content",
+          "severity": "Medium",
+          "description": "BlogPost.tsx renders a date but no author byline; SEO description falls back to a generic string when post.description is absent.",
+          "recommendation": "Render author + publish date and require descriptions in Sanity."
+        }
+      ]
+    },
+    {
+      "name": "On-Page SEO",
+      "score": 55,
+      "what_works": [
+        "useSEO hook sets per-route title/description/OG client-side",
+        "Clean keyword-rich URLs",
+        "Well-formed heading hierarchy on blog and download pages"
+      ],
+      "findings": [
+        {
+          "title": "All metadata is JS-injected; raw HTML identical across routes",
+          "severity": "High",
+          "description": "Raw <title>/<description>/OG tags on every route are the homepage's. No-JS crawlers and social scrapers get homepage metadata for every page.",
+          "recommendation": "Pre-render per-route metadata (ties to Technical C2)."
+        },
+        {
+          "title": "Blog posts never set unique og:title/og:image/canonical",
+          "severity": "High",
+          "description": "BlogPost.tsx only updates document.title + meta description manually; og:image stays logo.webp, og:title stays homepage default (verified in rendered output).",
+          "recommendation": "Route blog posts through useSEO with post title, description, image, and canonical."
+        },
+        {
+          "title": "Homepage has no H1",
+          "severity": "Medium",
+          "description": "The / route's hero is the logo; no h1 carries the primary keyword.",
+          "recommendation": "Add an H1 (e.g. 'Free WebP Image Converter — Fast & Private') in Home.tsx."
+        },
+        {
+          "title": "Raw title vs OG title inconsistency",
+          "severity": "Low",
+          "description": "Raw <title> 'Fast & Private' vs og:title 'Fast, Private & Free' in index.html.",
+          "recommendation": "Align both to the same string."
+        },
+        {
+          "title": "Footer links use rel=noreferrer without noopener",
+          "severity": "Low",
+          "description": "App.tsx footer social anchors: rel='noreferrer' strips referrer data.",
+          "recommendation": "Use rel='noopener' (or noopener noreferrer)."
+        }
+      ]
+    },
+    {
+      "name": "Schema / Structured Data",
+      "score": 50,
+      "what_works": [
+        "Valid WebApplication + Offer + Person JSON-LD on homepage (validated by render)"
+      ],
+      "findings": [
+        {
+          "title": "No FAQPage schema despite homepage FAQ section",
+          "severity": "High",
+          "description": "Home.tsx:551-569 renders 4 FAQs with no corresponding FAQPage markup.",
+          "recommendation": "Add FAQPage JSON-LD matching the rendered Q&As."
+        },
+        {
+          "title": "No SoftwareApplication schema for the paid Mac app",
+          "severity": "High",
+          "description": "/download sells a $8.99 app; only the free WebApplication is marked up (index.html).",
+          "recommendation": "Add SoftwareApplication + Offer on /download."
+        },
+        {
+          "title": "No BlogPosting/Article schema on blog posts",
+          "severity": "High",
+          "description": "Blog posts have no Article markup — no datePublished, headline, image, or author signals for rich results.",
+          "recommendation": "Inject BlogPosting + BreadcrumbList JSON-LD per post."
+        },
+        {
+          "title": "No Organization schema with sameAs",
+          "severity": "Medium",
+          "description": "Social profiles (X, LinkedIn, Reddit) exist in footer but aren't linked via schema.",
+          "recommendation": "Add Organization JSON-LD with logo + sameAs."
+        }
+      ]
+    },
+    {
+      "name": "Performance (CWV)",
+      "score": 62,
+      "what_works": [
+        "Async font loading with preload+onload swap",
+        "GA4 deferred 2s, route-level code splitting, manualChunks",
+        "Splash screen inline for fast FCP"
+      ],
+      "findings": [
+        {
+          "title": "hero.webp (93KB) preloaded globally but only used on /download",
+          "severity": "High",
+          "description": "index.html:26 preloads hero.webp fetchpriority=high on every page; homepage never displays it.",
+          "recommendation": "Preload hero.webp only on /download; drop the global preload."
+        },
+        {
+          "title": "logo.webp is 139KB — heavy LCP candidate",
+          "severity": "High",
+          "description": "The header logo (LCP candidate on homepage) is preloaded high-priority at 139KB.",
+          "recommendation": "Recompress to <=20KB; add srcset/sizes."
+        },
+        {
+          "title": "~2MB of autoplay MP4s load immediately on /download",
+          "severity": "Medium",
+          "description": "batch-processing.mp4 777KB, menubar-agent.mp4 435KB, clipboard-conversion.mp4 431KB, watch-folders.mp4 330KB start loading at page load.",
+          "recommendation": "preload='none' + lazy load / play-on-intersect."
+        },
+        {
+          "title": "BlogPost chunk is 638KB",
+          "severity": "Medium",
+          "description": "react-syntax-highlighter pulls large prism styles into the blog chunk.",
+          "recommendation": "Use per-language prism imports or a lighter highlighter."
+        }
+      ]
+    },
+    {
+      "name": "AI Search Readiness",
+      "score": 15,
+      "what_works": [
+        "Well-structured, citable blog content (headings, tables, code blocks)"
+      ],
+      "findings": [
+        {
+          "title": "robots.txt blocks all major AI crawlers",
+          "severity": "Critical",
+          "description": "Live robots.txt (Cloudflare-managed) disallows GPTBot, Google-Extended, CCBot, ClaudeBot, Bytespider, Amazonbot, Applebot-Extended, meta-externalagent and sets Content-Signal ai-train=no, use=reference. Site is absent from ChatGPT, Perplexity, AI Overviews, and Claude.",
+          "recommendation": "Reconsider blocking; at minimum allow Google-Extended/GPTBot/ClaudeBot or move to an AI-permissive policy. Deliberate if intentional."
+        },
+        {
+          "title": "No llms.txt",
+          "severity": "Medium",
+          "description": "https://webpit.site/llms.txt returns the SPA shell as 200 HTML.",
+          "recommendation": "Add public/llms.txt summarizing the tool + key pages."
+        },
+        {
+          "title": "Content is JS-rendered — unrenderable by most AI crawlers",
+          "severity": "High",
+          "description": "Even if unblocked, non-JS crawlers would only retrieve the splash shell.",
+          "recommendation": "Prerendering (Technical C2) also unlocks AI crawlability."
+        }
+      ]
+    },
+    {
+      "name": "Images",
+      "score": 60,
+      "what_works": [
+        "All first-party images are WebP",
+        "Blog cards use Sanity-resized images with alt={post.title}",
+        "Most images have width/height attributes preventing CLS"
+      ],
+      "findings": [
+        {
+          "title": "Blog body images use generic alt='Blog content'",
+          "severity": "Medium",
+          "description": "BlogPost.tsx:276 renders every inline Portable Text image with the same meaningless alt.",
+          "recommendation": "Pass the Sanity asset alt/caption from the image type."
+        },
+        {
+          "title": "OG image broken on /download and non-unique elsewhere",
+          "severity": "High",
+          "description": "og:image /downshare.webp doesn't exist (serves HTML). Blog posts share homepage logo.webp.",
+          "recommendation": "Create real 1200x630 OG images; set per-page og:image."
+        },
+        {
+          "title": "Missing favicon.ico and apple-touch-icon.png files",
+          "severity": "Low",
+          "description": "Both referenced paths return 200 text/html (SPA shell).",
+          "recommendation": "Ship real files in public/."
+        }
+      ]
+    }
+  ],
+  "action_plan": {
+    "phases": [
+      {
+        "name": "Phase 1: Critical Fixes",
+        "timeframe": "Week 1",
+        "items": [
+          "Fix per-route canonicals (useSEO + prerender)",
+          "Add prerendering/SSG for route-level HTML and metadata",
+          "Eliminate soft-404s and ship real files for broken asset references",
+          "Decide AI-crawler policy and update robots.txt accordingly"
+        ]
+      },
+      {
+        "name": "Phase 2: High-Impact Improvements",
+        "timeframe": "Weeks 2-3",
+        "items": [
+          "Add FAQPage, SoftwareApplication, BlogPosting, Organization schema",
+          "Unique OG/social images per page incl. blog posts",
+          "De-duplicate the 5 tool landing pages with unique FAQ/benefits",
+          "Fix image performance (logo.webp, hero.webp preload, srcset) and blog alt text",
+          "Lazy-load /download MP4s"
+        ]
+      },
+      {
+        "name": "Phase 3: Content & Authority",
+        "timeframe": "Month 2",
+        "items": [
+          "Add About page, author bylines, Organization E-E-A-T signals",
+          "Automate sitemap regeneration and commit fresh sitemap",
+          "Expand content cluster around WebP/image optimization; internal links tool->blog->download",
+          "Add llms.txt"
+        ]
+      },
+      {
+        "name": "Phase 4: Monitoring & Iteration",
+        "timeframe": "Ongoing",
+        "items": [
+          "Connect Search Console + CrUX for field CWV data",
+          "Baseline canonical/OG/schema drift checks across deploys",
+          "Quarterly ranking and cluster review"
+        ]
+      }
+    ]
+  },
+  "artifacts": {
+    "findings_dir": "findings/",
+    "screenshots_dir": "screenshots/"
+  }
+}

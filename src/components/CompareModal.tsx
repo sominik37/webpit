@@ -1,5 +1,7 @@
+import React, { useState, useRef } from 'react';
 import { X, ZoomIn, ZoomOut, Maximize2, Layers } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { cn } from '../lib/utils';
 
 interface CompareModalProps {
   originalUrl: string;

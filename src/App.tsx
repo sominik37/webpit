@@ -13,6 +13,8 @@ const Download = lazy(() => import('./pages/Download'));
 const DownloadSuccess = lazy(() => import('./pages/DownloadSuccess'));
 const Redownload = lazy(() => import('./pages/Redownload'));
 const Refund = lazy(() => import('./pages/Refund'));
+const About = lazy(() => import('./pages/About'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Simple loading fallback
 const PageLoader = () => (
@@ -71,7 +73,7 @@ export default function App() {
               <a
                 href="https://developers.google.com/speed/webp"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="text-sm text-slate-500 hover:text-slate-900 transition-colors"
               >
                 About WebP
@@ -106,7 +108,7 @@ export default function App() {
             <a
               href="https://developers.google.com/speed/webp"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors px-3 py-2.5 rounded-xl"
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -133,6 +135,8 @@ export default function App() {
             <Route path="/download/success" element={<DownloadSuccess />} />
             <Route path="/download/redownload" element={<Redownload />} />
             <Route path="/refund" element={<Refund />} />
+            <Route path="/about" element={<About />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </main>
@@ -207,6 +211,7 @@ export default function App() {
               </p>
 
               <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+                <Link to="/about" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">About</Link>
                 <Link to="/privacy" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Privacy</Link>
                 <Link to="/terms" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Terms</Link>
                 <Link to="/refund" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Refunds</Link>
@@ -215,7 +220,7 @@ export default function App() {
                 <a
                   href="https://x.com/sominik37"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   aria-label="X (Twitter)"
                   className="text-slate-400 hover:text-slate-900 transition-colors"
                 >
@@ -226,7 +231,7 @@ export default function App() {
                 <a
                   href="https://www.reddit.com/user/stark37/"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   aria-label="Reddit"
                   className="text-slate-400 hover:text-slate-900 transition-colors"
                 >
@@ -237,7 +242,7 @@ export default function App() {
                 <a
                   href="https://www.linkedin.com/in/usmanhyder37/"
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   aria-label="LinkedIn"
                   className="text-slate-400 hover:text-slate-900 transition-colors"
                 >

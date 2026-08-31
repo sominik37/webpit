@@ -1,0 +1,17 @@
+# WebPit
+
+> Convert and compress JPG, PNG, GIF, and WebP images into optimized WebP format, entirely in the browser. No signups, images never leave the device.
+
+## Web tool
+- https://webpit.site/ : Free online WebP image converter & compressor (100% client-side, private)
+- https://webpit.site/png-to-webp : Convert PNG to WebP while preserving alpha transparency
+- https://webpit.site/jpg-to-webp : Convert JPG to WebP to shrink file sizes
+- https://webpit.site/jpeg-to-webp : Convert JPEG to WebP in the browser
+- https://webpit.site/gif-to-webp : Convert heavy GIFs to static WebP
+- https://webpit.site/compress-webp : Compress existing WebP images further
+
+## Mac App
+- https://webpit.site/download : WebPit for macOS ($8.99 one-time) — batch processing, watch folders, menu bar agent, clipboard conversion, offline
+
+## Blog
+- https://webpit.site/blog : Articles on image optimization, WebP vs other formats, and Core Web Vitals

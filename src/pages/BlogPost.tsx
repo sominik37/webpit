@@ -2,8 +2,38 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { PortableText } from '@portabletext/react';
 import { client, urlFor } from '../lib/sanity';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { useSEO } from '../hooks/useSEO';
+import { useJsonLd } from '../lib/seo';
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+import javascript from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
+import typescript from 'react-syntax-highlighter/dist/esm/languages/prism/typescript';
+import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx';
+import tsx from 'react-syntax-highlighter/dist/esm/languages/prism/tsx';
+import bash from 'react-syntax-highlighter/dist/esm/languages/prism/bash';
+import markup from 'react-syntax-highlighter/dist/esm/languages/prism/markup';
+import json from 'react-syntax-highlighter/dist/esm/languages/prism/json';
+import css from 'react-syntax-highlighter/dist/esm/languages/prism/css';
+import python from 'react-syntax-highlighter/dist/esm/languages/prism/python';
+import sql from 'react-syntax-highlighter/dist/esm/languages/prism/sql';
+import go from 'react-syntax-highlighter/dist/esm/languages/prism/go';
+import rust from 'react-syntax-highlighter/dist/esm/languages/prism/rust';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+SyntaxHighlighter.registerLanguage('javascript', javascript);
+SyntaxHighlighter.registerLanguage('typescript', typescript);
+SyntaxHighlighter.registerLanguage('jsx', jsx);
+SyntaxHighlighter.registerLanguage('tsx', tsx);
+SyntaxHighlighter.registerLanguage('bash', bash);
+SyntaxHighlighter.registerLanguage('shell', bash);
+SyntaxHighlighter.registerLanguage('markup', markup);
+SyntaxHighlighter.registerLanguage('html', markup);
+SyntaxHighlighter.registerLanguage('xml', markup);
+SyntaxHighlighter.registerLanguage('json', json);
+SyntaxHighlighter.registerLanguage('css', css);
+SyntaxHighlighter.registerLanguage('python', python);
+SyntaxHighlighter.registerLanguage('sql', sql);
+SyntaxHighlighter.registerLanguage('go', go);
+SyntaxHighlighter.registerLanguage('rust', rust);
 
 // ─── Code Block Component ──────────────────────────────────────────────────
 interface CodeBlockValue {
@@ -163,6 +193,7 @@ interface Post {
   description?: string;
   publishedAt?: string;
   _createdAt: string;
+  _updatedAt?: string;
   mainImage?: any;
   body: any[];
   next?: { title: string; slug: { current: string } };
@@ -175,30 +206,52 @@ export default function BlogPost() {
   const [relatedPosts, setRelatedPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // SEO Update
-  useEffect(() => {
-    if (post) {
-      document.title = `${post.title} | WebPit Blog`;
-      
-      // Update meta description
-      let metaDescription = document.querySelector('meta[name="description"]');
-      const descText = post.description || "Read more about this article on the WebPit Blog.";
-      
-      if (metaDescription) {
-        metaDescription.setAttribute('content', descText);
-      } else {
-        metaDescription = document.createElement('meta');
-        metaDescription.setAttribute('name', 'description');
-        metaDescription.setAttribute('content', descText);
-        document.head.appendChild(metaDescription);
+  const canonical = `${window.location.origin}${window.location.pathname}`;
+
+  useSEO(post
+    ? {
+        title: `${post.title} | WebPit Blog`,
+        description: post.description || "Read more about this article on the WebPit Blog.",
+        image: post.mainImage ? urlFor(post.mainImage).width(1200).url() : undefined,
       }
-    }
-    
-    // Cleanup to reset title (optional but good practice)
-    return () => {
-      document.title = "WebPit - Free Online Image Converter";
-    };
-  }, [post]);
+    : { title: "WebPit Blog" });
+
+  useJsonLd(
+    post
+      ? {
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: post.title,
+          description: post.description,
+          image: post.mainImage ? urlFor(post.mainImage).width(1200).url() : undefined,
+          datePublished: post.publishedAt || post._createdAt,
+          dateModified: post._updatedAt,
+          author: { "@type": "Person", name: "Usman hyder", url: "https://github.com/sominik37" },
+          publisher: {
+            "@type": "Organization",
+            name: "WebPit",
+            logo: { "@type": "ImageObject", url: "https://webpit.site/logo.webp" },
+          },
+          mainEntityOfPage: canonical,
+        }
+      : null,
+    'blogposting-jsonld'
+  );
+
+  useJsonLd(
+    post
+      ? {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://webpit.site/" },
+            { "@type": "ListItem", position: 2, name: "Blog", item: "https://webpit.site/blog" },
+            { "@type": "ListItem", position: 3, name: post.title, item: canonical },
+          ],
+        }
+      : null,
+    'breadcrumb-jsonld'
+  );
 
   useEffect(() => {
     setLoading(true);
@@ -252,6 +305,12 @@ export default function BlogPost() {
               year: 'numeric',
             })}
           </div>
+          <p className="text-sm text-slate-500 mb-4">
+            By{' '}
+            <Link to="/about" className="font-semibold text-slate-700 hover:text-blue-600 transition-colors">
+              Usman hyder
+            </Link>
+          </p>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-12 leading-[1.1]">
             {post.title}
           </h1>
@@ -273,7 +332,11 @@ export default function BlogPost() {
               types: {
                 image: ({ value }) => (
                   <div className="my-12 rounded-[2rem] overflow-hidden shadow-xl border border-slate-100 p-2 bg-slate-50">
-                    <img src={urlFor(value).width(1200).url()} alt="Blog content" className="w-full rounded-[1.5rem]" />
+                    <img
+                      src={urlFor(value).width(1200).url()}
+                      alt={value?.alt || value?.caption || "WebPit blog illustration"}
+                      className="w-full rounded-[1.5rem]"
+                    />
                   </div>
                 ),
                 code: ({ value }) => <CodeBlock value={value} />,

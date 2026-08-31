@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import {
   Download,
@@ -12,6 +12,7 @@ import {
   Check,
 } from 'lucide-react';
 import { useSEO } from '../hooks/useSEO';
+import { useJsonLd } from '../lib/seo';
 import { cn } from '../lib/utils';
 import { getPaddle } from '../lib/paddle';
 
@@ -142,20 +143,46 @@ const WEB_VS_APP = [
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
+function LazyVideo({ src, label }: { src: string; label: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setReady(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: '300px' }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <video
+      ref={ref}
+      src={ready ? src : undefined}
+      preload="none"
+      autoPlay={ready}
+      loop
+      muted
+      playsInline
+      className="w-full rounded-2xl"
+      aria-label={label}
+    />
+  );
+}
+
 function ImagePlaceholder({ label, src }: { label: string; src?: string }) {
   if (src) {
     const isVideo = src.endsWith('.mp4') || src.endsWith('.webm') || src.endsWith('.mov');
     if (isVideo) {
-      return (
-        <video
-          src={src}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full rounded-2xl"
-        />
-      );
+      return <LazyVideo src={src} label={label} />;
     }
     return (
       <img
@@ -229,7 +256,28 @@ export default function DownloadPage() {
     title: 'Download WebPit — Native App for macOS',
     description:
       'Get WebPit for your desktop. Batch processing, watch folders, menu bar agent, clipboard conversion and more — all running natively, offline, at full speed.',
+    image: 'https://webpit.site/downshare.webp',
   });
+
+  useJsonLd(
+    {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'WebPit for Mac',
+      operatingSystem: 'macOS 26 Tahoe or later · Apple Silicon',
+      applicationCategory: 'MultimediaApplication',
+      url: 'https://webpit.site/download',
+      description:
+        'Native macOS WebP image converter with batch processing, watch folders, menu bar agent, clipboard conversion, and custom naming rules. Processes images fully offline.',
+      offers: {
+        '@type': 'Offer',
+        price: '8.99',
+        priceCurrency: 'USD',
+        availability: 'https://schema.org/InStock',
+      },
+    },
+    'software-app-jsonld'
+  );
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { client, urlFor } from '../lib/sanity';
+import { useSEO } from '../hooks/useSEO';
 
 interface Post {
   _id: string;
@@ -16,22 +17,10 @@ export default function Blog() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // SEO Update
-  useEffect(() => {
-    document.title = "WebPit Blog - Updates & Insights on Image Optimization";
-    
-    let metaDescription = document.querySelector('meta[name="description"]');
-    const descText = "Learn about image optimization, web performance, and the latest news from the WebPit ecosystem. Convert images to WebP and improve your Core Web Vitals.";
-    
-    if (metaDescription) {
-      metaDescription.setAttribute('content', descText);
-    } else {
-      metaDescription = document.createElement('meta');
-      metaDescription.setAttribute('name', 'description');
-      metaDescription.setAttribute('content', descText);
-      document.head.appendChild(metaDescription);
-    }
-  }, []);
+  useSEO({
+    title: "WebPit Blog - Updates & Insights on Image Optimization",
+    description: "Learn about image optimization, web performance, and the latest news from the WebPit ecosystem. Convert images to WebP and improve your Core Web Vitals.",
+  });
 
   useEffect(() => {
     client
