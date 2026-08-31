@@ -26,9 +26,11 @@ Requires `vite-plugin-prerender`/`vite-ssg` + network access to Sanity at build 
 - ✅ Client-side `NotFound` page (`src/pages/NotFound.tsx`) with `noindex, follow`, routed via `<Route path="*">`.
 - ⬜ True server-side 404 statuses still need Vercel middleware (middleware not added to avoid deploy risk). Soft-404s for unknown paths persist server-side.
 
-### ⚠️ C4. Decide AI-crawler policy (robots.txt)
-**Evidence:** live robots.txt (Cloudflare-managed) `Disallow`s GPTBot, Google-Extended, CCBot, ClaudeBot, Bytespider, Amazonbot, Applebot-Extended, meta-externalagent + `ai-train=no`.
-**Status: ⚠️ Needs owner decision.** This is a Cloudflare product setting outside the repo. Add `public/llms.txt` (✅ done) as a low-risk first step; revisit crawler disallows if AI visibility is wanted.
+### ✅ C4. Decide AI-crawler policy (robots.txt)
+**Evidence:** live robots.txt (Cloudflare-managed) `Disallow`ed GPTBot, Google-Extended, CCBot, ClaudeBot, Bytespider, Amazonbot, Applebot-Extended, meta-externalagent + `ai-train=no`.
+**Status: ✅ Applied (owner decision: allow).**
+- Cloudflare managed robots.txt **turned off** (owner action in dash.cloudflare.com → Security → Settings → "Set your preference to block training in robots.txt").
+- `public/robots.txt` updated to explicitly `Allow: /` for all crawlers including every major AI bot (GPTBot, OAI-SearchBot, Google-Extended, ClaudeBot, CCBot, PerplexityBot, Bytespider, Amazonbot, Applebot-Extended, meta-externalagent). Zero `Disallow` rules. Verified in `dist/robots.txt` after build.
 
 ---
 
@@ -101,7 +103,7 @@ Each format now has its own FAQ set (`Home.tsx` `seoData.faqItems`) rendered in 
 
 | Severity | Total | Done | Remaining |
 |---|---|---|---|
-| Critical | 4 | C1, C3 (partial) | C2 prerender, C3 middleware, C4 AI policy decision |
+| Critical | 4 | C1, C3 (partial), C4 | C2 prerender, C3 middleware |
 | High | 5 | H1, H2, H3, H4, H5 | — |
 | Medium | 4 | M1, M2, M3, M4 | CI sitemap hook (M2), author archive pages (M1) |
 | Low | 3 | homepage H1 ✅, favicon.ico ✅, noopener ✅ | meta keywords (harmless, kept) |
