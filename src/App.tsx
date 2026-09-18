@@ -179,7 +179,7 @@ export default function App() {
                 rel="noopener noreferrer"
               >
                 <img
-                  src="https://startuups.com//images/badges/startuupscom.badge.svg"
+                  src="https://startuups.com/images/badges/startuupscom.badge.svg"
                   alt="Featured on startuups"
                   width="150"
                   height="54"
