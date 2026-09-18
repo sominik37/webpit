@@ -8,6 +8,7 @@ import { MacAppPromoModal } from '../components/MacAppPromoModal';
 import { Download, Trash2, Settings2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { formatBytes } from '../lib/utils';
+import { encodeCanvasToWebp } from '../lib/webp';
 import { useFileLimit } from '../hooks/useFileLimit';
 
 import { useSEO } from '../hooks/useSEO';
@@ -241,7 +242,7 @@ export default function Home({ type = 'default' }: { type?: string }) {
       const image = new Image();
       image.src = img.previewUrl;
 
-      image.onload = () => {
+      image.onload = async () => {
         const canvas = document.createElement('canvas');
         canvas.width = image.width;
         canvas.height = image.height;
@@ -254,40 +255,43 @@ export default function Home({ type = 'default' }: { type?: string }) {
 
         ctx.drawImage(image, 0, 0);
 
-        canvas.toBlob(
-          (blob) => {
-            if (!blob) {
-              resolve({ ...img, status: 'error', error: 'Conversion failed' });
-              return;
-            }
+        let blob: Blob | null = null;
+        try {
+          blob = await encodeCanvasToWebp(canvas, targetQuality);
+        } catch (err) {
+          console.error('WebP encoding failed', err);
+          resolve({ ...img, status: 'error', error: 'Conversion failed' });
+          return;
+        }
 
-            if (blob.size >= img.originalSize) {
-              resolve({
-                ...img,
-                status: 'done',
-                resultBlob: img.originalFile,
-                resultUrl: img.previewUrl,
-                processedSize: img.originalSize,
-                quality: targetQuality,
-                isOriginalKept: true
-              });
-              return;
-            }
+        if (!blob) {
+          resolve({ ...img, status: 'error', error: 'Conversion failed' });
+          return;
+        }
 
-            const resultUrl = URL.createObjectURL(blob);
-            resolve({
-              ...img,
-              status: 'done',
-              resultBlob: blob,
-              resultUrl,
-              processedSize: blob.size,
-              quality: targetQuality,
-              isOriginalKept: false
-            });
-          },
-          'image/webp',
-          targetQuality / 100
-        );
+        if (blob.size >= img.originalSize) {
+          resolve({
+            ...img,
+            status: 'done',
+            resultBlob: img.originalFile,
+            resultUrl: img.previewUrl,
+            processedSize: img.originalSize,
+            quality: targetQuality,
+            isOriginalKept: true
+          });
+          return;
+        }
+
+        const resultUrl = URL.createObjectURL(blob);
+        resolve({
+          ...img,
+          status: 'done',
+          resultBlob: blob,
+          resultUrl,
+          processedSize: blob.size,
+          quality: targetQuality,
+          isOriginalKept: false
+        });
       };
 
       image.onerror = () => {
