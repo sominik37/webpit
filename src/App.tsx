@@ -7,8 +7,6 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 const Home = lazy(() => import('./pages/Home'));
 const Privacy = lazy(() => import('./pages/Privacy'));
 const Terms = lazy(() => import('./pages/Terms'));
-const Blog = lazy(() => import('./pages/Blog'));
-const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Download = lazy(() => import('./pages/Download'));
 const DownloadSuccess = lazy(() => import('./pages/DownloadSuccess'));
 const Redownload = lazy(() => import('./pages/Redownload'));
@@ -64,9 +62,9 @@ export default function App() {
           </Link>
           {/* Desktop nav */}
           <div className="hidden sm:flex items-center gap-6">
-              <Link to="/blog" className="text-sm font-medium text-slate-800 hover:text-blue-600 transition-colors">
+              <a href="/blog" className="text-sm font-medium text-slate-800 hover:text-blue-600 transition-colors">
                 Blog
-              </Link>
+              </a>
               <Link to="/download" className="text-sm font-medium text-slate-800 hover:text-blue-600 transition-colors">
                 Mac App
               </Link>
@@ -91,13 +89,13 @@ export default function App() {
         {/* Mobile nav drawer */}
         {mobileMenuOpen && (
           <div className="sm:hidden border-t border-slate-200/50 bg-white/95 backdrop-blur-md px-4 py-4 flex flex-col gap-1">
-            <Link
-              to="/blog"
+            <a
+              href="/blog"
               className="text-sm font-medium text-slate-800 hover:text-blue-600 hover:bg-slate-50 transition-colors px-3 py-2.5 rounded-xl"
               onClick={() => setMobileMenuOpen(false)}
             >
               Blog
-            </Link>
+            </a>
             <Link
               to="/download"
               className="text-sm font-medium text-slate-800 hover:text-blue-600 hover:bg-slate-50 transition-colors px-3 py-2.5 rounded-xl"
@@ -122,8 +120,6 @@ export default function App() {
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Home type="default" />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/png-to-webp" element={<Home type="png" />} />
             <Route path="/jpg-to-webp" element={<Home type="jpg" />} />
             <Route path="/jpeg-to-webp" element={<Home type="jpeg" />} />
@@ -209,6 +205,15 @@ export default function App() {
               <p className="text-slate-500 text-sm">
                 © {new Date().getFullYear()} WebPit. Processed locally for your privacy.
               </p>
+
+              <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Convert</span>
+                <Link to="/png-to-webp" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">PNG to WebP</Link>
+                <Link to="/jpg-to-webp" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">JPG to WebP</Link>
+                <Link to="/jpeg-to-webp" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">JPEG to WebP</Link>
+                <Link to="/gif-to-webp" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">GIF to WebP</Link>
+                <Link to="/compress-webp" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">Compress WebP</Link>
+              </div>
 
               <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
                 <Link to="/about" className="text-sm text-slate-500 hover:text-slate-900 transition-colors">About</Link>

@@ -1,12 +1,42 @@
 {
   "rewrites": [
     {
+      "source": "/api/revalidate",
+      "destination": "https://webpit-blog.vercel.app/api/revalidate"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/$1"
     },
     {
+      "source": "/_next/:path*",
+      "destination": "https://webpit-blog.vercel.app/_next/:path*"
+    },
+    {
+      "source": "/blog",
+      "destination": "https://webpit-blog.vercel.app/blog"
+    },
+    {
+      "source": "/blog/:slug",
+      "destination": "https://webpit-blog.vercel.app/blog/:slug"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/blog",
+      "headers": [
+        { "key": "x-vercel-enable-rewrite-caching", "value": "0" }
+      ]
+    },
+    {
+      "source": "/blog/:path*",
+      "headers": [
+        { "key": "x-vercel-enable-rewrite-caching", "value": "0" }
+      ]
     }
   ]
 }

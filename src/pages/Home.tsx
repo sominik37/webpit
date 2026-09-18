@@ -464,6 +464,16 @@ export default function Home({ type = 'default' }: { type?: string }) {
       <h1 className="sr-only">
         {type === 'default' ? "Free WebP Image Converter — Fast, Private & Secure" : currentSEO.title}
       </h1>
+      {type !== 'default' && (
+        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+          <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Also try</span>
+          <Link to="/png-to-webp" className="text-sm text-slate-600 hover:text-blue-600 transition-colors">PNG to WebP</Link>
+          <Link to="/jpg-to-webp" className="text-sm text-slate-600 hover:text-blue-600 transition-colors">JPG to WebP</Link>
+          <Link to="/jpeg-to-webp" className="text-sm text-slate-600 hover:text-blue-600 transition-colors">JPEG to WebP</Link>
+          <Link to="/gif-to-webp" className="text-sm text-slate-600 hover:text-blue-600 transition-colors">GIF to WebP</Link>
+          <Link to="/compress-webp" className="text-sm text-slate-600 hover:text-blue-600 transition-colors">Compress WebP</Link>
+        </div>
+      )}
       {/* Daily limit modal */}
       <MacAppPromoModal open={showLimitModal} onClose={() => setShowLimitModal(false)} />
       {/* Controls & Stats */}
@@ -768,8 +778,8 @@ export default function Home({ type = 'default' }: { type?: string }) {
           <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {resources.map((r) => (
               <li key={r.slug}>
-                <Link
-                  to={`/blog/${r.slug}`}
+                <a
+                  href={`/blog/${r.slug}`}
                   className="block h-full bg-white rounded-2xl border border-slate-200/60 p-5 hover:border-blue-200 hover:shadow-md transition-all"
                 >
                   <span className="text-sm font-semibold text-slate-800 leading-relaxed">{r.title}</span>
@@ -779,7 +789,7 @@ export default function Home({ type = 'default' }: { type?: string }) {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
                   </span>
-                </Link>
+                </a>
               </li>
             ))}
           </ul>

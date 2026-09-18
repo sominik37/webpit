@@ -126,12 +126,12 @@ export default function About() {
             >
               Get the Mac App
             </Link>
-            <Link
-              to="/blog"
+            <a
+              href="/blog"
               className="inline-flex items-center justify-center bg-white border border-slate-200 text-slate-700 font-bold px-8 py-3.5 rounded-xl hover:border-slate-300 transition-all"
             >
               Read the blog
-            </Link>
+            </a>
           </div>
         </section>
       </div>
